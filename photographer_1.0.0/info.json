@@ -1,0 +1,12 @@
+{
+    "name": "photographer",
+    "version": "1.0.0",
+    "title": "Photographer",
+    "author": "Proicop",
+    "contact": "prokop@randacek.dev",
+    "homepage": "https://github.com/prokoprandacek/FactorioMaps",
+    "description": "Generates a screenshot array",
+    "license": "GNU General Public License v2.0",
+    "factorio_version": "1.1",
+    "dependencies": []
+}
