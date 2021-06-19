@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>FactorioMaps</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="index.css"/>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+							   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+							   crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+				integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+				crossorigin=""></script>
+		<script src="mapInfo.json"></script>
+		<style>
+html, body {
+	margin: 0px;
+	height: 100%;
+} #map {
+	background: #222831;
+	height: 100%;
+}
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script>
+mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.json
+var southWest = L.latLng(0, 0),
+	northEast = L.latLng(Math.abs(mapInfo.maxx) + Math.abs(mapInfo.minx), Math.abs(mapInfo.maxy) + Math.abs(mapInfo.miny)),
+	bounds = L.latLngBounds(southWest, northEast); 
+var map = L.map('map').setView([0, 0], 0).setMaxBounds()
+L.tileLayer('./images/0/nauvis/day/0/{x}/{y}.png', {
+	attribution: '<a href="https://github.com/ProkopRandacek/FactorioPhotograper">FactorioPhotograper</a>',
+	maxZoom: 3,
+	minZoom: 0,
+	maxNativeZoom: 3,
+	minNativeZoom: 0,
+	zoomOffset: 0,
+	noWrap: true,
+	tileSize: 128,
+}).addTo(map)
+L.TileLayer.prototype.getTileUrl = function(c) {
+	console.log('./images/0/nauvis/day/0/' + c.x + '/' + c.y + '.png zoom ' + c.z)
+	return      './images/0/nauvis/day/0/' + c.x + '/' + c.y + '.png'
+}
+		</script>
+	</body>
+</html>
+
