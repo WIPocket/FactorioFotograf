@@ -6,10 +6,11 @@ Just run:
 `./run savename`  
 If you want to optimize the generated map with `optipng`:  
 `./optimize webfolder`  
-usually saves around 15 %.
+usually saves around 15 %
 
 ## Task list
 - [x] Lua mod
 - [x] Image merge tool
 - [x] Web
 - [ ] Generate lower zoom levels
+- [ ] Smarter mod injection (Right now disables all other mods)

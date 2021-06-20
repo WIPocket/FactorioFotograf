@@ -1,3 +1,5 @@
 *.png
 notes
 imgmerge
+web/images
+web/mapInfo.json

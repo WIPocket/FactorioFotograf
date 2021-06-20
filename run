@@ -1,7 +1,6 @@
 #!/bin/sh
 
-if [ $# -eq 0 ]
-then
+if [ $# -eq 0 ]; then
 	echo "No save name supplied"
 	exit 1
 fi
