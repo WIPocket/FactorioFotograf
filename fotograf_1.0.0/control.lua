@@ -46,6 +46,7 @@ script.on_event(defines.events.on_tick, function(event)
 		dy = math.abs(miny) + math.abs(maxy)
 		game.print("took " .. (dx * dy) .. " " .. image_resolution .. "x" .. image_resolution .. " screenshots in a " .. dx .. "x" .. dy .. " grid at " .. pixels_per_tile .. " pixels per tile")
 		done = true
+		game.print("now exit the game")
 	else
 		for x = minx,maxx,1 do -- draw the grid
 			for y = miny,maxy,1 do

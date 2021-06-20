@@ -18,7 +18,6 @@ echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 echo "Exit the game as soon as you gain control of your character                     " &&
 echo "or if any error occurres. In that case you probably entered an invalid save name" &&
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" &&
-echo &&
 factorio --load-game $1 1> /dev/null &&
 
 # make a copy of the web template
