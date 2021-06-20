@@ -1,5 +1,6 @@
 # Factorio Fotograf
-Minimalistic Factorio map generator for Linux.
+Minimalistic Factorio map generator for Linux.  
+I assume that your Factorio folder is in `~/.factorio`
 
 ## Usage
 Just run:  
