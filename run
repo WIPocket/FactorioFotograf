@@ -12,6 +12,10 @@ ln -sf $(pwd)/fotograf_1.0.0 ~/.factorio/mods/ &&
 mv ~/.factorio/mods/mod-list.json ~/.factorio/mods/mod-list.json.backup &&
 cp ./mod-list.json ~/.factorio/mods/mod-list.json &&
 
+# make sure that there is no garbage from last time
+rm ~/.factorio/script-output/images/ -r
+rm ~/.factorio/script-output/mapInfo.json
+
 # load the save and generate the images
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" &&
 echo "Exit the game as soon as you gain control of your character                     " &&
