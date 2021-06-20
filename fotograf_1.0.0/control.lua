@@ -22,6 +22,14 @@ script.on_event(defines.events.on_tick, function(event)
 		maxy = maxy + add_to_border
 		minx = minx - add_to_border
 		miny = miny - add_to_border
+		game.write_file("mapInfo.json", "mapInfo = '" .. game.table_to_json({
+			maxx = maxx,
+			maxy = maxy,
+			minx = minx,
+			miny = miny,
+			block_size = block_size,
+			pixels_per_tile = pixels_per_tile,
+		}) .. "'\n")
 		for x = minx,maxx,1 do -- loop over all blocks in the calculated box and take a screenshot
 			for y = miny,maxy,1 do
 				game.take_screenshot{
@@ -29,7 +37,7 @@ script.on_event(defines.events.on_tick, function(event)
 					position = {x * block_size + block_size / 2, y * block_size + block_size / 2}, -- position defines the middle of the screenshot
 					show_entity_info = true,
 					--      images timestamp   surface name        time zoom    x           y
-					path = "images/0/" .. game.surfaces[1].name .. "/day/0/" .. x .. "/" .. y .. ".png",
+					path = "images/0/" .. game.surfaces[1].name .. "/day/0/" .. x - minx .. "/" .. y - miny .. ".png",
 					zoom = zoom
 				}
 			end

@@ -1,4 +1,4 @@
-# Factorio Photograper
+# Factorio Fotograf
 Minimalistic Factorio map generator for Linux.
 
 - [x] Lua mod
