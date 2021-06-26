@@ -20,12 +20,13 @@ Notes:
 - If you convert the images to jpg, you need to change the first line of `index.js` from png to jpg
 
 ## Deps
-Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download here](https://factorio.com/download) and then add the binary to PATH)
+Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download here](https://factorio.com/download) and then add the binary to PATH)  
+`jq`, `convert`, `gcc`
 
 ## Task list
 - [x] Lua mod
 - [x] Image merge tool
 - [x] Web
-- [ ] Generate lower zoom levels
+- [x] Generate lower zoom levels
 - [ ] Compatible with other mods
 

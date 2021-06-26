@@ -46,6 +46,7 @@ int main(int argc, char* filenames[]) {
 	// WRITE MERGED IMAGE
 
 	stbi_write_png(filenames[5], mw, mh, 4, merged, 0);
+	printf("wrote %s: w=%d, h=%d n=%d\n", filenames[5], mw, mh, 4);
 	return 0;
 }
 

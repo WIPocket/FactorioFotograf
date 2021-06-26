@@ -32,14 +32,13 @@ script.on_event(defines.events.on_tick, function(event)
 		for x = minx,maxx,1 do -- loop over all blocks in the calculated box and take a screenshot
 			for y = miny,maxy,1 do
 				position = {x * block_size + block_size / 2, y * block_size + block_size / 2}
-				game.print("[gps=" .. position[1] .. "," .. position[2] .. "]")
 				if #game.surfaces[1].find_entities_filtered{force=game.players[1].force, position=position, radius=min_dist_to_smt, limit=1} > 0 then
 					game.take_screenshot{
 						resolution = {image_resolution, image_resolution},
 						position = position, -- position defines the middle of the screenshot
 						show_entity_info = true,
 						--      images, tick, zoom, x, y,
-						path = "images/0/0/" .. x .. "/" .. y .. ".png",
+						path = "images/0/8/" .. x .. "/" .. y .. ".png",
 						zoom = zoom
 					}
 				end

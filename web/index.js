@@ -8,22 +8,21 @@ var map = L.map('map', {
 	zoom: 0,
 })
 
-L.tileLayer('./images/0/0/{x}/{y}' + ext, {
+L.tileLayer('./images/0/{z}/{x}/{y}' + ext, {
 	attribution: '<a href="https://github.com/ProkopRandacek/FactorioFotograf">FactorioFotograf</a>',
-	maxZoom: 0,
+	maxZoom: 8,
 	minZoom: 0,
-	maxNativeZoom: 0,
-	minNativeZoom: 0,
 	zoomOffset: 0,
 	noWrap: true,
-	tileSize: mapInfo.block_size * mapInfo.pixels_per_tile / 4,
+	tileSize: mapInfo.block_size * mapInfo.pixels_per_tile,
 }).addTo(map)
 
 L.TileLayer.prototype.getTileUrl = function(c) {
-	if (c.x >= mapInfo.minx && c.x <= mapInfo.maxx && c.y >= mapInfo.miny && c.y <= mapInfo.maxy) {
-		return './images/0/0/' + c.x + '/' + c.y + ext
-	} else { // tile is definitely out of bounds
-		return ""
-	}
+	//if (c.x >= mapInfo.minx && c.x <= mapInfo.maxx && c.y >= mapInfo.miny && c.y <= mapInfo.maxy) {
+		console.log('./images/0/' + c.z + '/' + c.x + '/' + c.y + ext)
+		return './images/0/' + c.z + '/' + c.x + '/' + c.y + ext
+	//} else { // tile is definitely out of bounds
+		//return ""
+	//}
 }
 
