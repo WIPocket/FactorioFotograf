@@ -6,35 +6,39 @@ if [ $# -eq 0 ]; then
 fi
 
 # link mod
-ln -sf $(pwd)/fotograf_1.0.0 ~/.factorio/mods/ &&
+ln -sf $(pwd)/fotograf_1.0.0 ~/.factorio/mods/
 
 # use our mod list
-mv ~/.factorio/mods/mod-list.json ~/.factorio/mods/mod-list.json.backup &&
-cp ./mod-list.js ~/.factorio/mods/mod-list.js &&
-
-# make sure that there is no garbage from last time
+mv ~/.factorio/mods/mod-list.json ~/.factorio/mods/mod-list.json.backup
+cp ./mod-list.json ~/.factorio/mods/mod-list.json
 rm ~/.factorio/script-output/images/ -rf
-rm ~/.factorio/script-output/mapInfo.json -f
+rm ~/.factorio/script-output/mapInfo.js -f
+rm ~/.factorio/script-output/done -f
 
 # load the save and generate the images
-echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" &&
-echo "Exit the game as soon as you gain control of your character                     " &&
-echo "or if any error occurres. In that case you probably entered an invalid save name" &&
-echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" &&
-factorio --load-game $1 1> /dev/null &&
+factorio --load-game $1 1> /dev/null&
+
+echo "Waiting for the game to finish rendering..."
+
+until [ -f ~/.factorio/script-output/done ]; do # wait until this file exists
+     sleep 1
+done
+
+sleep 3
+
+killall factorio
+
 
 # make a copy of the web template
-mkdir $1 &&
-cp ./web/index* $1/ &&
+mkdir $1
+cp ./web/index* $1/
 
 # move the images and map info
-mv ~/.factorio/script-output/images/      $1/ &&
-mv ~/.factorio/script-output/mapInfo.json $1/ &&
+mv ~/.factorio/script-output/images/    $1/
+mv ~/.factorio/script-output/mapInfo.js $1/
 
 # return original mod list
-mv ~/.factorio/mods/mod-list.json.backup ~/.factorio/mods/mod-list.json &&
+mv ~/.factorio/mods/mod-list.json.backup ~/.factorio/mods/mod-list.json
 
-echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" &&
-echo "map was successfully generated (if there was no error in factorio)" &&
-echo "generated web is in $(pwd)/$1/" &&
-echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+echo "map was successfully generated"
+echo "generated web is in $(pwd)/$1/"

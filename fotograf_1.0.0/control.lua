@@ -7,9 +7,9 @@ min_dist_to_smt = 60  -- how far away a player's structure can be from the block
 image_resolution = block_size * pixels_per_tile
 zoom = pixels_per_tile / 32 -- not sure if this number is different on different graphics settings
 maxx,maxy,minx,miny = -9999999999,-9999999999,9999999999,9999999999
-done = false
+tick = 0
 script.on_event(defines.events.on_tick, function(event)
-	if done == false then -- do only one time when game is loaded
+	if tick == 0 then -- do only one time when game is loaded
 		for _, e in pairs(game.surfaces[1].find_entities_filtered{force = game.players[1].force}) do -- calculate box that contains all player's entities
 			maxx = math.max(maxx,math.floor(e.position.x/block_size))
 			maxy = math.max(maxy,math.floor(e.position.y/block_size))
@@ -53,7 +53,9 @@ script.on_event(defines.events.on_tick, function(event)
 			surface = game.surfaces[1]
 		}]]
 		done = true
+	elseif tick == 10 then -- wait a bit
 		game.write_file("done", "done")
 	end
+	tick = tick + 1
 end)
 

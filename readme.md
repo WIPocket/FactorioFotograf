@@ -7,10 +7,10 @@ Just run:
 `./run savename`  
 If you want to optimize the generated map with `optipng`:  
 `./optimize webfolder`  
-usually saves around 15 %
+usually saves around 20 %
 
 ## Deps
-- Nonheadless Factorio runnable by `factorio`
+- Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download here](https://factorio.com/download) and then add the binary to PATH)
 - `optipng` and `parallel` for optimizing images
 
 ## Task list
@@ -19,3 +19,4 @@ usually saves around 15 %
 - [x] Web
 - [ ] Generate lower zoom levels
 - [ ] Smarter mod injection (Right now disables all other mods)
+- [ ] Compatible with other mods
