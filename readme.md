@@ -9,6 +9,10 @@ If you want to optimize the generated map with `optipng`:
 `./optimize webfolder`  
 usually saves around 15 %
 
+## Deps
+- Nonheadless Factorio runnable by `factorio`
+- `optipng` and `parallel` for optimizing images
+
 ## Task list
 - [x] Lua mod
 - [x] Image merge tool

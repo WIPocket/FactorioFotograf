@@ -10,11 +10,11 @@ ln -sf $(pwd)/fotograf_1.0.0 ~/.factorio/mods/ &&
 
 # use our mod list
 mv ~/.factorio/mods/mod-list.json ~/.factorio/mods/mod-list.json.backup &&
-cp ./mod-list.json ~/.factorio/mods/mod-list.json &&
+cp ./mod-list.js ~/.factorio/mods/mod-list.js &&
 
 # make sure that there is no garbage from last time
-rm ~/.factorio/script-output/images/ -r
-rm ~/.factorio/script-output/mapInfo.json
+rm ~/.factorio/script-output/images/ -rf
+rm ~/.factorio/script-output/mapInfo.json -f
 
 # load the save and generate the images
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" &&
