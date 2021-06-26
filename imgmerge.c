@@ -6,35 +6,25 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "stb_image_resize.h"
 
+// gets 4 pngs, merges them into one png with the same size as all the individual input pngs and writes it
+// ./imgmerge A.png B.png C.png D.png ABCS.png
+// I assume that all images are the same square size
 int main(int argc, char* filenames[]) {
-	if (argc != 6) { printf("Usage: ./imgmerge img1.png img2.png img3.png img4.png outputimage.png\n"); return 1; }
-
-	// LOAD & SHRINK IMAGES
+	// LOAD IMAGES
 
 	int w, h, n;
 	unsigned char *imgs[4];
 	for (int i = 0; i < 4; i++) {
-		int xn, yn;
-		unsigned char *big = stbi_load(filenames[i + 1], &xn, &yn, &n, 4);
-		if (i == 0) { // on first iter set the expected image size
-			w = xn;
-			h = yn;
-		} else { // on later iters check that image size is correct
-			if (xn != w || yn != h) {
-				printf("image %s is the wrong size %dx%d instead of %dx%d\n", filenames[i], xn, yn, w, h);
-				return 1;
-			}
-		}
+		unsigned char *big = stbi_load(filenames[i + 1], &w, &h, &n, 4);
 		imgs[i] = malloc(w * h);
-		stbir_resize_uint8( big, w, h, 0, imgs[i], w / 2, h / 2, 0, 4);
-		printf("loaded %s: w=%d, h=%d, n=%d\n", filenames[i + 1], w, h, n);
+		stbir_resize_uint8(big, w, h, 0, imgs[i], w / 2, h / 2, 0, 4);
 	}
-	w /= 2;
+	w /= 2; // the images get scaled down
 	h /= 2;
 
 	// MERGE IMAGES
 
-	int mw = w * 2;
+	int mw = w * 2; // final image is 2x2 smaller images
 	int mh = h * 2;
 	unsigned char merged[mw * mh * 4]; // 4 chars per pixel (rgba)
 
@@ -46,7 +36,7 @@ int main(int argc, char* filenames[]) {
 	// WRITE MERGED IMAGE
 
 	stbi_write_png(filenames[5], mw, mh, 4, merged, 0);
-	printf("wrote %s: w=%d, h=%d n=%d\n", filenames[5], mw, mh, 4);
+	printf("Wrote %s\n", filenames[5]);
 	return 0;
 }
 

@@ -22,13 +22,13 @@ echo "Waiting for the game to finish rendering..."
 until [ -f ~/.factorio/script-output/done ]; do
      sleep 1
 done
-sleep 3
 killall factorio
 
 
 # make a copy of the web template
 mkdir $1
-cp ./web/index* $1/
+cp ./web/index.html $1/
+cp ./web/script.js  $1/
 
 # move the images and map info
 mv ~/.factorio/script-output/images/      $1/
@@ -45,7 +45,8 @@ mv ~/.factorio/mods/mod-list.json.backup ~/.factorio/mods/mod-list.json
 imgres=$(cat $1/mapInfo.json | jq ".image_resolution")
 convert blank.png -resize ${imgres}x${imgres} -colorspace RGB $1/images/blank.png
 
-gcc imgmerge.c -Istb/ -Wall -Wextra -Wundef -Wshadow -Wunreachable-code -Winit-self -Wuninitialized -Wno-misleading-indentation -fdata-sections -ffunction-sections -std=gnu11 -Ofast -march=native -lm -o imgmerge -Wl,--gc-sections
+echo Compiling image merge tool
+gcc imgmerge.c -Istb/ -Wall -Wextra -Wundef -Wshadow -Wunreachable-code -Winit-self -Wuninitialized -Wno-misleading-indentation -fdata-sections -ffunction-sections -std=gnu11 -Ofast -march=native -lm -o imgmerge -Wl,--gc-sections &> /dev/null
 
 ./zoomout $1 8 7 # lol maybe loop?
 ./zoomout $1 7 6
@@ -56,5 +57,5 @@ gcc imgmerge.c -Istb/ -Wall -Wextra -Wundef -Wshadow -Wunreachable-code -Winit-s
 ./zoomout $1 2 1
 ./zoomout $1 1 0
 
-echo "map was successfully generated"
-echo "generated web is in $(pwd)/$1/"
+echo Done
+echo Generated web is in $(pwd)/$1/

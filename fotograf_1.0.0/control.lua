@@ -44,16 +44,8 @@ script.on_event(defines.events.on_tick, function(event)
 				end
 			end
 		end
-		--[[rendering.draw_rectangle{ -- visualize the exported rectangle
-			color = {0, 0.5, 0, 0.1},
-			filled = true,
-			left_top = {minx * block_size, miny * block_size},
-			right_bottom = {(maxx + 1) * block_size, (maxy + 1) * block_size},
-			time_to_live = 60 * 30,
-			surface = game.surfaces[1]
-		}]]
 		done = true
-	elseif tick == 10 then -- wait a bit
+		game.print("done")
 		game.write_file("done", "done")
 	end
 	tick = tick + 1

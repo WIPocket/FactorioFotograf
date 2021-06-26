@@ -32,3 +32,4 @@ for x in $(seq $MINX $MAXX); do
 		./imgmerge $A $C $B $D $O
 	done
 done
+
