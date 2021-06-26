@@ -6,7 +6,10 @@ I assume that your Factorio folder is in `~/.factorio`
 ## Usage
 `./run savename`  
 Where `savename` is the save name. Sometimes it needs to end with `.zip` sometimes it does not. I don't know why.  
-For very large maps Factorio can eat a lot of ram while capturing.
+
+## Example
+[Protab map render](https://randacek.dev/s/m/f/protab/)  
+Taking screenshots took around 1.5 minutes. Creating lower zoom levels took another 20 minutes. After that the map was 15 GB in size. Converting to jpg took 4 minutes and the final map is 3.5 GB large.
 
 ## Image optimization
 Command                                                                      | Description           | %save | Time
