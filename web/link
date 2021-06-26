@@ -1,3 +1,0 @@
-#!/bin/sh
-ln -sf ~/.factorio/script-output/images/ ./images
-ln -sf ~/.factorio/script-output/mapInfo.json ./mapInfo.json

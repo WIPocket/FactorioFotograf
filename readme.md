@@ -1,6 +1,8 @@
 # Factorio Fotograf
 
-Minimalistic Factorio map generator for Linux.  
+[![demo image](./demo.png)](https://randacek.dev/s/m/f/protab/)
+
+Minimalistic and simple to customize Factorio map generator for Linux.  
 I assume that your Factorio folder is in `~/.factorio`
 
 ## Usage
@@ -31,5 +33,11 @@ Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download her
 - [x] Image merge tool
 - [x] Web
 - [x] Generate lower zoom levels
+- [ ] Zooming in parallel
+- [ ] Position in the url
 - [ ] Compatible with other mods
+- [ ] Achieve optimal C code
+  - [ ] Own png import & export
+  - [ ] Own image resize
+  - [ ] Import image bitmap straight into the final position in ram to avoid copying
 
