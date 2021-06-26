@@ -1,10 +1,10 @@
 -- settings --
-block_size      = 20  -- how long the side of one screenshot should be. This affect if you want 10 100x100 screnshots or 100 10x10 screenshots.
+block_size      = 20  -- how long the side of one screenshot should be in tiles. This affect if you want 10 100x100 screnshots or 100 10x10 screenshots.
 pixels_per_tile = 32  -- how many pixels per tile to use in the screenshot. I dont think that game textures are bigger than 64 pixels per tile.
-add_to_border   = 10   -- how many more blocks to add around the border. Use this if you want extra space around you factory in the map
 min_dist_to_smt = 60  -- how far away a player's structure can be from the block center for it to be included in the map.
 -- end of settings --
 image_resolution = block_size * pixels_per_tile
+add_to_border = math.ceil(min_dist_to_smt / block_size) + 1
 zoom = pixels_per_tile / 32 -- not sure if this number is different on different graphics settings
 maxx,maxy,minx,miny = -9999999999,-9999999999,9999999999,9999999999
 tick = 0
@@ -20,14 +20,15 @@ script.on_event(defines.events.on_tick, function(event)
 		maxy = maxy + add_to_border
 		minx = minx - add_to_border
 		miny = miny - add_to_border
-		game.write_file("mapInfo.js", "mapInfo = '" .. game.table_to_json({
+		game.write_file("mapInfo.json", game.table_to_json({
 			maxx = maxx,
 			maxy = maxy,
 			minx = minx,
 			miny = miny,
 			block_size = block_size,
 			pixels_per_tile = pixels_per_tile,
-		}) .. "'\n")
+			image_resolution = image_resolution,
+		}))
 		for x = minx,maxx,1 do -- loop over all blocks in the calculated box and take a screenshot
 			for y = miny,maxy,1 do
 				position = {x * block_size + block_size / 2, y * block_size + block_size / 2}

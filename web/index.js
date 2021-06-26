@@ -1,3 +1,5 @@
+ext = ".png" // change this to jpg if you converted the images to jpg
+
 mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.js
 
 var map = L.map('map', {
@@ -6,7 +8,7 @@ var map = L.map('map', {
 	zoom: 0,
 })
 
-L.tileLayer('./images/0/0/{x}/{y}.png', {
+L.tileLayer('./images/0/0/{x}/{y}' + ext, {
 	attribution: '<a href="https://github.com/ProkopRandacek/FactorioFotograf">FactorioFotograf</a>',
 	maxZoom: 0,
 	minZoom: 0,
@@ -19,7 +21,7 @@ L.tileLayer('./images/0/0/{x}/{y}.png', {
 
 L.TileLayer.prototype.getTileUrl = function(c) {
 	if (c.x >= mapInfo.minx && c.x <= mapInfo.maxx && c.y >= mapInfo.miny && c.y <= mapInfo.maxy) {
-		return './images/0/0/' + c.x + '/' + c.y + '.png'
+		return './images/0/0/' + c.x + '/' + c.y + ext
 	} else { // tile is definitely out of bounds
 		return ""
 	}
