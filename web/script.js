@@ -1,4 +1,4 @@
-ext = ".png" // change this to jpg if you converted the images to jpg
+ext = ".png"
 
 mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.js
 

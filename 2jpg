@@ -1,0 +1,9 @@
+#!/bin/sh
+if [ $# -eq 0 ]; then
+	echo specify what folder to optimize
+	exit 1
+fi
+find $1 -name "*.png" | parallel --bar "mogrify -format jpg {} && rm {}"
+
+sed -i "1s/.*/ext = \".jpg\"/" $1/script.js # modify the js to use jpgs instead of pngs
+

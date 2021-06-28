@@ -7,9 +7,8 @@ fi
 # link mod
 ln -sf $(pwd)/fotograf_1.0.0 ~/.factorio/mods/
 
-# use our mod list
-mv ~/.factorio/mods/mod-list.json ~/.factorio/mods/mod-list.json.backup
-cp ./mod-list.json ~/.factorio/mods/mod-list.json
+# enable fotograf
+./editmodlist ~/.factorio/mods/mod-list.json true
 
 # clear garbage from last time
 rm ~/.factorio/script-output/images/ -rf
@@ -22,6 +21,7 @@ echo "Waiting for the game to finish rendering..."
 until [ -f ~/.factorio/script-output/done ]; do
      sleep 1
 done
+sleep 3
 killall factorio
 
 
@@ -38,15 +38,17 @@ printf "mapInfo = '" > $1/mapInfo.js
 cat $1/mapInfo.json >> $1/mapInfo.js
 printf "'" >> $1/mapInfo.js
 
-# return original mod list
-mv ~/.factorio/mods/mod-list.json.backup ~/.factorio/mods/mod-list.json
+# disable fotograf
+./editmodlist ~/.factorio/mods/mod-list.json false
 
 # generate a blank tile with the right size
 imgres=$(cat $1/mapInfo.json | jq ".image_resolution")
 convert blank.png -resize ${imgres}x${imgres} -colorspace RGB $1/images/blank.png
 
-echo Compiling image merge tool
-gcc imgmerge.c -Istb/ -Wall -Wextra -Wundef -Wshadow -Wunreachable-code -Winit-self -Wuninitialized -Wno-misleading-indentation -fdata-sections -ffunction-sections -std=gnu11 -Ofast -march=native -lm -o imgmerge -Wl,--gc-sections &> /dev/null
+if [ ! -f ./imgmerge ]; then
+	echo Compiling image merge tool
+	gcc imgmerge.c -Istb/ -Wall -Wextra -Wundef -Wshadow -Wunreachable-code -Winit-self -Wuninitialized -Wno-misleading-indentation -fdata-sections -ffunction-sections -std=gnu11 -Ofast -march=native -lm -o imgmerge -Wl,--gc-sections &> /dev/null
+fi
 
 ./zoomout $1 8 7 # lol maybe loop?
 ./zoomout $1 7 6
@@ -59,3 +61,4 @@ gcc imgmerge.c -Istb/ -Wall -Wextra -Wundef -Wshadow -Wunreachable-code -Winit-s
 
 echo Done
 echo Generated web is in $(pwd)/$1/
+
