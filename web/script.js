@@ -9,7 +9,7 @@ var map = L.map('map', {
 })
 
 L.tileLayer('./images/0/{z}/{x}/{y}' + ext, {
-	attribution: '<a href="https://github.com/ProkopRandacek/FactorioFotograf">FactorioFotograf</a>',
+	attribution: '<a href="https://git.randacek.dev/prokop/FactorioFotograf">FactorioFotograf</a>',
 	maxZoom: 8,
 	minZoom: 0,
 	zoomOffset: 0,
