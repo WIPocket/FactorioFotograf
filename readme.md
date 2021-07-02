@@ -1,6 +1,6 @@
 # Factorio Fotograf
 
-[![demo image](./demo.png)](https://randacek.dev/s/m/f/protab/)
+[![demo image](./demo.png)](https://randacek.dev/m/f/protab/)
 
 Minimalistic and easy to customize Factorio map generator for Linux in under 300 loc.  
 I assume that your Factorio folder is in `~/.factorio`
@@ -11,9 +11,9 @@ Where `savename` is the save name. If you mistype the savename, just load the ga
 If you are using mods make sure that you can load the save without syncing the mods. The same mods you have enabled right now + Fotograf will be used when loading the save.
 
 ## Example
-[Protab](https://randacek.dev/s/m/f/protab/)  
+[Protab](https://randacek.dev/m/f/protab/)  
 Taking the screenshots took ~1.5 minutes. Creating lower zoom levels took another 20 minutes. After that the map was 15 GB in size. Converting to jpg took 4 minutes and the final map has 3.5 GB.  
-[Space Exploration map](https://randacek.dev/s/m/f/se/)  
+[Space Exploration map](https://randacek.dev/m/f/se/)  
 Compatible with mods
 
 ## Image optimization
@@ -36,6 +36,9 @@ Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download her
 - [ ] Include world download in the web
 - [ ] Zooming in parallel
 - [ ] Position in the url
+- [ ] Map timelapse capturing
+- [ ] Multiple surfaces
+- [ ] Optionally capture in jpg right away instead of converting later
 - [x] Compatible with other mods
 - [ ] Achieve optimal C code
   - [ ] Own image resize

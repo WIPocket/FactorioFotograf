@@ -1,7 +1,7 @@
 -- settings --
 block_size      = 20  -- how long the side of one screenshot should be in tiles. This affect if you want 10 100x100 screnshots or 100 10x10 screenshots.
 pixels_per_tile = 32  -- how many pixels per tile to use in the screenshot. I dont think that game textures are bigger than 64 pixels per tile.
-min_dist_to_smt = 120 -- how far away a player's structure can be (in tiles) from the block center for it to be included in the map.
+min_dist_to_smt = 200 -- how far away a player's structure can be (in tiles) from the block center for it to be included in the map.
 -- end of settings --
 image_resolution = block_size * pixels_per_tile
 add_to_border = math.ceil(min_dist_to_smt / block_size) + 1
@@ -9,7 +9,9 @@ zoom = pixels_per_tile / 32 -- not sure if this number is different on different
 maxx,maxy,minx,miny = -9999999999,-9999999999,9999999999,9999999999
 tick = 0
 script.on_event(defines.events.on_tick, function(event)
-	if tick == 0 then -- do only one time when game is loaded
+	if tick == 0 then
+		game.print("Taking screenshots...")
+	elseif tick == 1 then -- do only one time when game is loaded
 		for _, e in pairs(game.surfaces[1].find_entities_filtered{force = game.players[1].force}) do -- calculate box that contains all player's entities
 			maxx = math.max(maxx,math.floor(e.position.x/block_size))
 			maxy = math.max(maxy,math.floor(e.position.y/block_size))
