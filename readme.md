@@ -17,12 +17,13 @@ Taking the screenshots took ~1.5 minutes. Creating lower zoom levels took anothe
 Compatible with mods
 
 ## Image optimization
-Script      | Description               | %save | Time
-------------|---------------------------|-------|-----
-`minifypng` | Optimizes the pngs        | ~30 % | slow
-`2jpg`      | Converts the pngs to jpgs | ~75 % | fast
+Script       | Description                     | %save | Time
+-------------|---------------------------------|-------|----------
+`minifypng`  | Optimizes the pngs              | ~30 % | slow
+`minifypng2` | Convert to colormaps & optimize | ~70 % | more slow
+`2jpg`       | Converts the pngs to jpgs       | ~75 % | fast
 
-`yay -S parallel optipng imagemagick --needed`
+`yay -S parallel optipng imagemagick pngnq-s9 --needed`
 
 ## Deps
 Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download here](https://factorio.com/download) and then add the binary to PATH)  
@@ -33,13 +34,13 @@ Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download her
 - [x] Image merge tool
 - [x] Web
 - [x] Generate lower zoom levels
+- [x] Compatible with other mods
 - [ ] Include world download in the web
 - [ ] Zooming in parallel
 - [ ] Position in the url
-- [ ] Map timelapse capturing
+- [ ] Map time lapse capturing
 - [ ] Multiple surfaces
 - [ ] Optionally capture in jpg right away instead of converting later
-- [x] Compatible with other mods
 - [ ] Achieve optimal C code
   - [ ] Own image resize
   - [ ] Import image bitmap straight into the final position in ram to avoid copying
