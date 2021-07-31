@@ -3,42 +3,51 @@ if [ $# -eq 0 ]; then
 	echo "No save name supplied"
 	exit 1
 fi
+echo "Start"
 
-# link mod
+echo "Injecting FactorioFotograf into the game"
 ln -sf $(pwd)/fotograf_1.0.0 ~/.factorio/mods/
 
-# enable fotograf
+echo "Enabling FactorioFotograf mod"
 ./editmodlist ~/.factorio/mods/mod-list.json true
 
-# clear garbage from last time
+echo "Clearing script output"
 rm ~/.factorio/script-output/images/ -rf
 rm ~/.factorio/script-output/mapInfo.json -f
 rm ~/.factorio/script-output/done -f
+rm ./$1 -rf
 
-# load the save and generate the images
 factorio --load-game $1 1> /dev/null&
-echo "Waiting for the game to finish rendering..."
+echo "If you misstyped the savename, load the game you want to capture manually."
+
+echo "Waiting for the game to finish capturing..."
 until [ -f ~/.factorio/script-output/done ]; do
-     sleep 1
+	if [ -d ~/.factorio/script-output/images/ ]; then
+		printf "\r%s/??? files created" $(find ~/.factorio/script-output/images/ . -type f | wc -l)
+	fi
+	sleep 1
 done
-sleep 3
+echo
+
+sleep 3 # just to be sure
+echo "Capturing done. Killing Factorio."
 killall factorio
 
-
-# make a copy of the web template
+echo "Creating web folder"
 mkdir $1
 cp ./web/index.html $1/
 cp ./web/script.js  $1/
 
-# move the images and map info
+echo "Moving images"
 mv ~/.factorio/script-output/images/      $1/
 mv ~/.factorio/script-output/mapInfo.json $1/
 
+echo "Generating js scripts"
 printf "mapInfo = '" > $1/mapInfo.js
 cat $1/mapInfo.json >> $1/mapInfo.js
 printf "'" >> $1/mapInfo.js
 
-# disable fotograf
+echo "Restoring mod settings"
 ./editmodlist ~/.factorio/mods/mod-list.json false
 
 # generate a blank tile with the right size

@@ -29,7 +29,9 @@ for x in $(seq $MINX $MAXX); do
 		if [ -f "./$1/images/0/$2/$((bx + 1))/$((by + 0)).png" ]; then C="./$1/images/0/$2/$((bx + 1))/$((by + 0)).png"; fi
 		if [ -f "./$1/images/0/$2/$((bx + 1))/$((by + 1)).png" ]; then D="./$1/images/0/$2/$((bx + 1))/$((by + 1)).png"; fi
 		if [[ $A = $B && $A = $C && $A = $D ]]; then continue; fi # dont merge 4 blanks
-		./imgmerge $A $C $B $D $O
+		printf "\r%s - %s            " "zoom level $3" "$(./imgmerge $A $C $B $D $O)"
+		curr=$((curr+1))
 	done
 done
+echo
 

@@ -12,16 +12,16 @@ If you are using mods make sure that you can load the save without syncing the m
 
 ## Example
 [Protab](https://randacek.dev/m/f/protab/)  
-Taking the screenshots took ~1.5 minutes. Creating lower zoom levels took another 20 minutes. After that the map was 15 GB in size. Converting to jpg took 4 minutes and the final map has 3.5 GB.  
+Taking the screenshots took ~1.5 minutes. Creating lower zoom levels took another 20 minutes. After that the map was 15 GB in size. Converting to jpg took 4 minutes and the final map has 1.2 GB.  
 [Space Exploration map](https://randacek.dev/m/f/se/)  
 Compatible with mods
 
 ## Image optimization
-Script       | Description                     | %save | Time
--------------|---------------------------------|-------|----------
-`minifypng`  | Optimizes the pngs              | ~30 % | slow
-`minifypng2` | Convert to colormaps & optimize | ~70 % | more slow
-`2jpg`       | Converts the pngs to jpgs       | ~75 % | fast
+Script       | Description                       | %save | Time
+-------------|-----------------------------------|-------|----------
+`minifypng`  | PNG optimization                  | ~30 % | slow
+`minifypng2` | PNG quantization and optimization | ~70 % | slower
+`2jpg`       | Converts the PNGs to JPEGs        | ~75 % | fast
 
 `yay -S parallel optipng imagemagick pngnq-s9 --needed`
 
