@@ -3,13 +3,49 @@ if [ $# -eq 0 ]; then
 	echo "No save name supplied"
 	exit 1
 fi
+
+function editmodlist {
+	# todo: this is unbelievably slow
+	modlist=$1
+	newval=$2
+	tmp=$(mktemp)
+
+	len="$(cat $modlist | jq ".mods | length")"
+	done=false
+
+	for i in $(seq 0 $(( len - 1 ))); do
+		mod="$(cat $modlist | jq -r ".mods[$i].name")"
+		if [ "$mod" = "fotograf" ]; then
+			cat $modlist | jq ".mods[$i].enabled = $newval" > $tmp
+			mv $modlist $modlist.orig
+			mv $tmp $modlist
+			done=true
+		fi
+	done
+
+	if [ "$done" = false ]; then
+		cat $modlist | jq ".mods[$len] = {\"name\": \"fotograf\", \"enabled\": $newval}" > $tmp
+		mv $modlist $modlist.orig
+		mv $tmp $modlist
+	fi
+}
+
+function zoomout {
+	maxx=$(cat ./$1/mapInfo.json|jq '.maxx')
+	maxy=$(cat ./$1/mapInfo.json|jq '.maxy')
+	minx=$(cat ./$1/mapInfo.json|jq '.minx')
+	miny=$(cat ./$1/mapInfo.json|jq '.miny')
+
+	./imgmerge $1 $2 $3 $maxx $maxy $minx $miny
+}
+
 echo "Start"
 
 echo "Injecting FactorioFotograf into the game"
 ln -sf $(pwd)/fotograf_1.0.0 ~/.factorio/mods/
 
 echo "Enabling FactorioFotograf mod"
-./editmodlist ~/.factorio/mods/mod-list.json true
+editmodlist ~/.factorio/mods/mod-list.json true
 
 echo "Clearing script output"
 rm ~/.factorio/script-output/images/ -rf
@@ -54,21 +90,17 @@ echo "Restoring mod settings"
 imgres=$(cat $1/mapInfo.json | jq ".image_resolution")
 convert blank.png -resize ${imgres}x${imgres} -colorspace RGB $1/images/blank.png
 
-if [ ! -f ./imgmerge ]; then
-	echo Compiling image merge tool
-	cd c
-	make
-	cd ..
-fi
+echo Compiling image merge tool
+cd c && make && cd ..
 
-./zoomout $1 8 7 # lol maybe loop?
-./zoomout $1 7 6
-./zoomout $1 6 5
-./zoomout $1 5 4
-./zoomout $1 4 3
-./zoomout $1 3 2
-./zoomout $1 2 1
-./zoomout $1 1 0
+zoomout $1 8 7 # lol maybe loop?
+zoomout $1 7 6
+zoomout $1 6 5
+zoomout $1 5 4
+zoomout $1 4 3
+zoomout $1 3 2
+zoomout $1 2 1
+zoomout $1 1 0
 
 echo Done
 
