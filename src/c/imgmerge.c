@@ -1,5 +1,9 @@
+#include <stdbool.h>
 #include <stdio.h>
-#define STBI_ONLY_PNG
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -7,16 +11,14 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "stb_image_resize.h"
 
-// gets 4 pngs, merges them into one png with the same size as all the individual input pngs and writes it
-// ./imgmerge A.png B.png C.png D.png ABCS.png
-// I assume that all images are the same square size
-int main(int argc, char* filenames[]) {
-	// LOAD IMAGES
+// processing copies the entire bitmaps many times -> unnecessary -> slow
+void process_image(char* filenames[4], char* output) {
+	// READ IMAGES
 
 	int w, h, n;
 	unsigned char *imgs[4];
 	for (int i = 0; i < 4; i++) {
-		unsigned char *big = stbi_load(filenames[i + 1], &w, &h, &n, 4);
+		unsigned char *big = stbi_load(filenames[i], &w, &h, &n, 4);
 		imgs[i] = malloc(w * h);
 		stbir_resize_uint8(big, w, h, 0, imgs[i], w / 2, h / 2, 0, 4);
 	}
@@ -36,8 +38,7 @@ int main(int argc, char* filenames[]) {
 
 	// WRITE MERGED IMAGE
 
-	stbi_write_png(filenames[5], mw, mh, 4, merged, 0);
-	printf("Wrote %s\n", filenames[5]);
-	return 0;
+	stbi_write_png(output, mw, mh, 4, merged, 0);
+	printf("Wrote %s\n", output);
 }
 

@@ -1,0 +1,8 @@
+#!/bin/sh
+maxx=$(cat ./$1/mapInfo.json|jq '.maxx')
+maxy=$(cat ./$1/mapInfo.json|jq '.maxy')
+minx=$(cat ./$1/mapInfo.json|jq '.minx')
+miny=$(cat ./$1/mapInfo.json|jq '.miny')
+
+echo $1 $2 $3 $maxx $maxy $minx $miny
+./imgmerge $1 $2 $3 $maxx $maxy $minx $miny

@@ -1,4 +1,5 @@
 #!/bin/sh
+# todo: this is unbelievably slow
 modlist=$1
 newval=$2
 tmp=$(mktemp)

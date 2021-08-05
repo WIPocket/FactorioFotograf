@@ -27,7 +27,7 @@ Script       | Description                       | %save | Time
 
 ## Deps
 Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download here](https://factorio.com/download) and then add the binary to PATH)  
-`jq`, `convert`, `gcc`
+`jq`, `convert` (imagemagick), `gcc`
 
 ## TODO
 - [x] Lua mod

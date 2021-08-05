@@ -1,5 +1,5 @@
 -- settings --
-block_size      = 20  -- how long the side of one screenshot should be in tiles. This affect if you want 10 100x100 screnshots or 100 10x10 screenshots.
+block_size      = 20  -- how long the side of one screenshot should be in tiles.
 pixels_per_tile = 32  -- how many pixels per tile to use in the screenshot. I dont think that game textures are bigger than 64 pixels per tile.
 min_dist_to_smt = 200 -- how far away a player's structure can be (in tiles) from the block center for it to be included in the map.
 -- end of settings --
