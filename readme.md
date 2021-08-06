@@ -2,7 +2,7 @@
 
 [![demo image](./demo.png)](https://randacek.dev/m/f/protab/)
 
-Minimalistic and easy to customize Factorio map generator for Linux in 356 lines of code.  
+Minimalistic and easy to customize Factorio map generator for Linux in 364 lines of code.  
 I assume that your Factorio folder is in `~/.factorio`
 
 ## Usage
@@ -35,9 +35,9 @@ Non-headless Factorio runnable by `factorio` (`yay -S factorio` or [download her
 - [x] Web
 - [x] Generate lower zoom levels
 - [x] Compatible with other mods
-- [ ] Include world download in the web
-- [ ] Zooming in parallel
+- [x] Zooming in parallel
 - [ ] Position in the url
+- [ ] Include world download in the web
 - [ ] Map time lapse capturing
 - [ ] Multiple surfaces
 - [ ] Optionally capture in jpg right away instead of converting later

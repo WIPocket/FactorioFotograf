@@ -9,3 +9,7 @@
 !fotograf_1.0.0
 !imgmerge
 !web
+
+# I ignore everything by default here because a folder is created
+# here with the save name and I really don't want git to try to
+# index it when I accidentaly call `git add .`. (takes a very long time)

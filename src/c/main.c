@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "thpool.h"
 #include "imgmerge.h"
 
 #define PATH_LEN 256
@@ -23,6 +24,8 @@ int main(int argc, char* argv[]) {
 	int maxy = atoi(argv[5]);
 	int minx = atoi(argv[6]);
 	int miny = atoi(argv[7]);
+
+	threadpool pool = thpool_init(sysconf(_SC_NPROCESSORS_ONLN));
 
 	if (minx % 2 == 1) minx--;
 	if (miny % 2 == 1) miny--;
@@ -70,9 +73,14 @@ int main(int argc, char* argv[]) {
 			filenames[2] = c;
 			filenames[3] = d;
 			filenames[4] = o;
-			process_image((void*)filenames);
+
+			thpool_add_work(pool, process_image, (void*)filenames);
 		}
 	}
+
+	thpool_wait(pool);
+	thpool_destroy(pool);
+
 	free(blank);
 }
 

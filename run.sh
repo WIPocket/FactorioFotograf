@@ -1,6 +1,6 @@
 #!/bin/sh
 cd src
-./fotograf $@
+./fotograf.sh $@
 rm ../$1 -rf
 mv $1 ../
 cd ..

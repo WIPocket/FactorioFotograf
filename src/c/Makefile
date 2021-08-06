@@ -1,8 +1,8 @@
 CFLAGS ?= -O3 -march=native -pipe
 WARNS  += -Wall -Wunused-parameter -Wshadow -Wundef -Wunreachable-code -Wno-misleading-indentation
 
-LDLIBS += -lm
-CFLAGS += -Istb/
+LDLIBS += -lm -lpthread
+CFLAGS += -Istb/ -IC-Thread-Pool/
 
 CC ?= gcc
 
@@ -18,7 +18,7 @@ clear: clean
 
 
 DEPS = $(wildcard *.h)
-SRCS = $(wildcard *.c)
+SRCS = $(wildcard *.c) C-Thread-Pool/thpool.c
 OBJS = $(sort $(SRCS:.c=.o))
 
 %.o: %.c $(DEPS)
