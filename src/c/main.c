@@ -1,5 +1,3 @@
-#define _GNU_SOURCE
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,9 +5,8 @@
 #include <unistd.h>
 
 #include "imgmerge.h"
-#include "mkdir_p.h"
 
-#define DIR_MODE S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH
+#define PATH_LEN 256
 
 bool file_exists(char* filename) { return access(filename, R_OK | W_OK) == 0; }
 
@@ -37,29 +34,45 @@ int main(int argc, char* argv[]) {
 	maxx /= 2;
 	maxy /= 2;
 
+	char *blank = calloc(1, PATH_LEN * sizeof(char*));
+	sprintf(blank, "./%s/images/blank.png", path);
+
 	for (int x = minx; x < maxx; x++) {
 		for (int y = miny; y < maxy; y++) {
 			int bx = x * 2;
 			int by = y * 2;
-			char *a, *b, *c, *d, *output, *blank, *dir;
-			asprintf(&a, "./%s/images/0/%s/%d/%d.png", path, from, bx + 0, by + 0);
-			asprintf(&b, "./%s/images/0/%s/%d/%d.png", path, from, bx + 1, by + 0);
-			asprintf(&c, "./%s/images/0/%s/%d/%d.png", path, from, bx + 0, by + 1);
-			asprintf(&d, "./%s/images/0/%s/%d/%d.png", path, from, bx + 1, by + 1);
-			asprintf(&output, "./%s/images/0/%s/%d/%d.png", path, to, x, y);
-			asprintf(&blank, "./%s/images/blank.png", path);
-			asprintf(&dir, "./%s/images/0/%s/%d", path, to, x);
-			mkdir_p(dir, DIR_MODE);
-			int bc = 0;
-			if (!file_exists(a)) { a = blank; bc++; }
-			if (!file_exists(b)) { b = blank; bc++; }
-			if (!file_exists(c)) { c = blank; bc++; }
-			if (!file_exists(d)) { d = blank; bc++; }
-			if (bc == 4) continue; // don't merge 4 blanks
 
-			char* filenames[4] = {a, b, c, d};
-			process_image(filenames, output);
+			char *a = calloc(PATH_LEN, sizeof(char*));
+			char *b = calloc(PATH_LEN, sizeof(char*));
+			char *c = calloc(PATH_LEN, sizeof(char*));
+			char *d = calloc(PATH_LEN, sizeof(char*));
+			char *o = calloc(PATH_LEN, sizeof(char*));
+
+			sprintf(a, "./%s/images/0/%s/%d_%d.png", path, from, bx + 0, by + 0);
+			sprintf(b, "./%s/images/0/%s/%d_%d.png", path, from, bx + 1, by + 0);
+			sprintf(c, "./%s/images/0/%s/%d_%d.png", path, from, bx + 0, by + 1);
+			sprintf(d, "./%s/images/0/%s/%d_%d.png", path, from, bx + 1, by + 1);
+			sprintf(o, "./%s/images/0/%s/%d_%d.png", path, to  , x     , y     );
+
+			int bc = 0;
+			if (!file_exists(a)) { free(a); a = blank; bc++; }
+			if (!file_exists(b)) { free(b); b = blank; bc++; }
+			if (!file_exists(c)) { free(c); c = blank; bc++; }
+			if (!file_exists(d)) { free(d); d = blank; bc++; }
+			if (bc == 4) {
+				free(o);
+				continue; // don't merge 4 blanks
+			}
+
+			char** filenames = malloc(5 * sizeof(char*));
+			filenames[0] = a;
+			filenames[1] = b;
+			filenames[2] = c;
+			filenames[3] = d;
+			filenames[4] = o;
+			process_image((void*)filenames);
 		}
 	}
+	free(blank);
 }
 

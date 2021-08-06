@@ -1,0 +1,11 @@
+# ignore all
+*
+
+# except for this
+!.gitignore
+!blank.png
+!c
+!fotograf.sh
+!fotograf_1.0.0
+!imgmerge
+!web

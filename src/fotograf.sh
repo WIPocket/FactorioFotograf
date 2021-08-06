@@ -31,10 +31,12 @@ function editmodlist {
 }
 
 function zoomout {
-	maxx=$(cat ./$1/mapInfo.json|jq '.maxx')
-	maxy=$(cat ./$1/mapInfo.json|jq '.maxy')
-	minx=$(cat ./$1/mapInfo.json|jq '.minx')
-	miny=$(cat ./$1/mapInfo.json|jq '.miny')
+	maxx=$(cat ./$1/mapInfo.json | jq '.maxx')
+	maxy=$(cat ./$1/mapInfo.json | jq '.maxy')
+	minx=$(cat ./$1/mapInfo.json | jq '.minx')
+	miny=$(cat ./$1/mapInfo.json | jq '.miny')
+
+	mkdir -p $1/images/0/$3/
 
 	./imgmerge $1 $2 $3 $maxx $maxy $minx $miny
 }
@@ -84,7 +86,7 @@ cat $1/mapInfo.json >> $1/mapInfo.js
 printf "'" >> $1/mapInfo.js
 
 echo "Restoring mod settings"
-./editmodlist ~/.factorio/mods/mod-list.json false
+editmodlist ~/.factorio/mods/mod-list.json false
 
 # generate a blank tile with the right size
 imgres=$(cat $1/mapInfo.json | jq ".image_resolution")

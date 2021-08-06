@@ -1,7 +1,7 @@
 -- settings --
 block_size      = 20  -- how long the side of one screenshot should be in tiles.
 pixels_per_tile = 32  -- how many pixels per tile to use in the screenshot. I dont think that game textures are bigger than 64 pixels per tile.
-min_dist_to_smt = 200 -- how far away a player's structure can be (in tiles) from the block center for it to be included in the map.
+min_dist_to_smt = 100 -- how far away a player's structure can be (in tiles) from the block center for it to be included in the map.
 -- end of settings --
 image_resolution = block_size * pixels_per_tile
 add_to_border = math.ceil(min_dist_to_smt / block_size) + 1
@@ -40,7 +40,7 @@ script.on_event(defines.events.on_tick, function(event)
 						position = position, -- position defines the middle of the screenshot
 						show_entity_info = true,
 						--      images, tick, zoom, x, y,
-						path = "images/0/8/" .. x .. "/" .. y .. ".png",
+						path = "images/0/8/" .. x .. "_" .. y .. ".png",
 						zoom = zoom,
 						daytime = 1.0
 					}
