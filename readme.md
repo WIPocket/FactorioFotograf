@@ -18,8 +18,11 @@ Capturing screenshots with Factorio (20k images) | 2 Minutes | 4 Gb
 Creating zoom levels | 3 Minutes | 1 Gb
 Optional: Converting to jpeg | 3.5 Minutes | 2 Gb
 
-Raw png map size: 19 Gb.  
-Jpeg map size 0.8 Gb.  
+State         | Size   | Time to convert
+--------------|--------|-----------------
+Raw pngs      | 19  Gb | 0
+Jpeg          | 0.8 Gb | 5 mins
+Optimized png | 6.8 Gb | 1 Hour
 
 [Space Exploration map](https://randacek.dev/m/f/se/)  
 Compatible with mods
