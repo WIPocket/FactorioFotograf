@@ -5,10 +5,7 @@
 Minimalistic and easy to customize Factorio map generator for Linux in 364 lines of code.  
 I assume that your Factorio folder is in `~/.factorio`
 
-## Usage
-`./run savename`  
-Where `savename` is the save name. If you mistype the savename, just load the game manually when Factorio opens.  
-If you are using mods make sure that you can load the save without syncing the mods. The same mods you have enabled right now + Fotograf will be used when loading the save.
+## [Usage guide](./docs/guide.md)
 
 ## Example
 [Protab](https://randacek.dev/m/f/protab/)  
