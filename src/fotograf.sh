@@ -38,7 +38,7 @@ function zoomout {
 
 	mkdir -p $1/images/0/$3/
 
-	valgrind ./imgmerge $1 $2 $3 $maxx $maxy $minx $miny
+	./imgmerge $1 $2 $3 $maxx $maxy $minx $miny
 }
 
 echo "Start"

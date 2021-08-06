@@ -13,7 +13,7 @@
 
 bool is_blank(char* str) {
 	int len = strlen(str);
-	char* suffix = "blank.png";
+	char* suffix = "k.png"; // if the file ends with k.png we already know it has to be blank.png
 	int suffix_len = strlen(suffix);
 	for (int i = 0; i < suffix_len; i++)
 		if (str[len - (suffix_len - i)] != suffix[i])
@@ -30,9 +30,9 @@ void process_image(void* args) {
 	int w, h, n;
 	unsigned char *imgs[4];
 	for (int i = 0; i < 4; i++) {
-		unsigned char *big = stbi_load(filenames[i], &w, &h, &n, 4);
+		unsigned char *big = stbi_load(filenames[i], &w, &h, &n, 3);
 		imgs[i] = malloc(w * h);
-		stbir_resize_uint8(big, w, h, 0, imgs[i], w / 2, h / 2, 0, 4);
+		stbir_resize_uint8(big, w, h, 0, imgs[i], w / 2, h / 2, 0, 3);
 		free(big);
 	}
 	w /= 2; // the images get scaled down
@@ -42,18 +42,18 @@ void process_image(void* args) {
 
 	int mw = w * 2; // final image is 2x2 smaller images
 	int mh = h * 2;
-	unsigned char merged[mw * mh * 4]; // 4 chars per pixel (rgba)
+	unsigned char merged[mw * mh * 3]; // 3 chars per pixel (rgb)
 
-	for (int l = 0; l < h; l++) { memcpy(&merged[(((l    ) * mw)    ) * 4], &imgs[0][l * w * 4], w * 4); }
-	for (int l = 0; l < h; l++) { memcpy(&merged[(((l    ) * mw) + w) * 4], &imgs[1][l * w * 4], w * 4); }
-	for (int l = 0; l < h; l++) { memcpy(&merged[(((l + h) * mw)    ) * 4], &imgs[2][l * w * 4], w * 4); }
-	for (int l = 0; l < h; l++) { memcpy(&merged[(((l + h) * mw) + w) * 4], &imgs[3][l * w * 4], w * 4); }
+	for (int l = 0; l < h; l++) { memcpy(&merged[(((l    ) * mw)    ) * 3], &imgs[0][l * w * 3], w * 3); }
+	for (int l = 0; l < h; l++) { memcpy(&merged[(((l    ) * mw) + w) * 3], &imgs[1][l * w * 3], w * 3); }
+	for (int l = 0; l < h; l++) { memcpy(&merged[(((l + h) * mw)    ) * 3], &imgs[2][l * w * 3], w * 3); }
+	for (int l = 0; l < h; l++) { memcpy(&merged[(((l + h) * mw) + w) * 3], &imgs[3][l * w * 3], w * 3); }
 
 	for (int i = 0; i < 4; i++) free(imgs[i]);
 
 	// WRITE MERGED IMAGE
 
-	stbi_write_png(filenames[4], mw, mh, 4, merged, 0);
+	stbi_write_png(filenames[4], mw, mh, 3, merged, 0);
 	printf("Wrote %s\n", filenames[4]);
 
 	for (int i = 0; i < 4; i++)

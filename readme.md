@@ -12,7 +12,15 @@ If you are using mods make sure that you can load the save without syncing the m
 
 ## Example
 [Protab](https://randacek.dev/m/f/protab/)  
-Taking the screenshots took ~1.5 minutes. Creating lower zoom levels took another 20 minutes. After that the map was 15 GB in size. Converting to jpg took 4 minutes and the final map has 1.2 GB.  
+State | Time | Ram usage peak (including OS)
+------|------|-------------------------------
+Capturing screenshots with Factorio (20k images) | 2 Minutes | 4 Gb
+Creating zoom levels | 3 Minutes | 1 Gb
+Optional: Converting to jpeg | 3.5 Minutes | 2 Gb
+
+Raw png map size: 19 Gb.  
+Jpeg map size 0.8 Gb.  
+
 [Space Exploration map](https://randacek.dev/m/f/se/)  
 Compatible with mods
 
