@@ -12,6 +12,6 @@ Timelapse         | TODO                              | Done and working
 Multiple surfaces | TODO                              | Done and working
 Threads           | 100 % Multithreaded               | 100 % Multithreaded
 
-TLDR:
-FactorioFotograf is Linux/Mac only & very small and simple.
-FactorioMaps is Windows only, bulky and full of features.
+TLDR:  
+FactorioFotograf is Linux/Mac only & very small and simple.  
+FactorioMaps is Windows only, bulky and full of features.  
