@@ -4,6 +4,18 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
+save=$1
+
+if [ "$2" = "--png" ]; then
+	echo "#define PNG" > ./c/settings.h
+	sed -i "1s/.*/ext = \".png\"/" ./fotograf_1.0.0/control.lua
+	sed -i "1s/.*/ext = \".png\"/" ./web/script.js
+else
+	echo "#define JPG" > ./c/settings.h
+	sed -i "1s/.*/ext = \".jpg\"/" ./fotograf_1.0.0/control.lua
+	sed -i "1s/.*/ext = \".jpg\"/" ./web/script.js
+fi
+
 function editmodlist { # todo: this is unbelievably slow
 	modlist=$1
 	newval=$2
@@ -32,8 +44,7 @@ function editmodlist { # todo: this is unbelievably slow
 function zoomout {
 	maxx=$(cat ./$1/mapInfo.json | jq '.maxx')
 	maxy=$(cat ./$1/mapInfo.json | jq '.maxy')
-	minx=$(cat ./$1/mapInfo.json | jq '.minx')
-	miny=$(cat ./$1/mapInfo.json | jq '.miny')
+	minx=$(cat ./$1/mapInfo.json | jq '.minx') miny=$(cat ./$1/mapInfo.json | jq '.miny')
 	mkdir -p $1/images/0/$3/
 	./imgmerge $1 $2 $3 $maxx $maxy $minx $miny
 }
@@ -50,10 +61,10 @@ echo "Clearing script output"
 rm ~/.factorio/script-output/images/ -rf
 rm ~/.factorio/script-output/mapInfo.json -f
 rm ~/.factorio/script-output/done -f
-rm ./$1 -rf
-mkdir -p $1
+rm ./$save -rf
+mkdir -p $save
 
-factorio --load-game $1 1> /dev/null&
+factorio --load-game $save 1> /dev/null&
 fac_pid="$!"
 
 echo "Waiting for the game to finish capturing..."
@@ -69,16 +80,16 @@ echo "Capturing done. Closing Factorio."
 kill $fac_pid
 
 echo "Moving images"
-mv ~/.factorio/script-output/images/      $1/
-mv ~/.factorio/script-output/mapInfo.json $1/
-imgres=$(cat $1/mapInfo.json | jq ".image_resolution") #  generate blank tile
-convert blank.png -resize ${imgres}x${imgres} -colorspace RGB $1/images/blank.png
+mv ~/.factorio/script-output/images/      $save/
+mv ~/.factorio/script-output/mapInfo.json $save/
+imgres=$(cat $save/mapInfo.json | jq ".image_resolution") #  generate blank tile
+convert blank.png -resize ${imgres}x${imgres} -colorspace RGB $save/images/blank.png
 
 echo "Creating web files"
-cp ./web/* $1/ # copy the html and js script
-printf "mapInfo = '" > $1/mapInfo.js # generate js script with map info to read from
-cat $1/mapInfo.json >> $1/mapInfo.js
-printf "'" >> $1/mapInfo.js
+cp ./web/* $save/ # copy the html and js script
+printf "mapInfo = '"    > $save/mapInfo.js # generate js script with map info to read from
+cat $save/mapInfo.json >> $save/mapInfo.js
+printf "'" >> $save/mapInfo.js
 
 echo "Restoring mod settings"
 editmodlist ~/.factorio/mods/mod-list.json false
@@ -89,7 +100,7 @@ cd c
 cd ..
 
 for n in $(seq 8 -1 1); do
-	zoomout $1 $n $(expr $n - 1)
+	zoomout $save $n $(expr $n - 1)
 done
 
 echo Done

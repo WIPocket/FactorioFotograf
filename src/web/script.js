@@ -1,4 +1,4 @@
-ext = ".png"
+ext = ".jpg"
 
 var mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.js
 

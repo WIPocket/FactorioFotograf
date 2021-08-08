@@ -4,6 +4,13 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#ifdef JPG
+#define STBI_ONLY_JPEG
+#endif
+#ifdef PNG
+#define STBI_ONLY_PNG
+#endif
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -53,7 +60,11 @@ void process_image(void* args) {
 
 	// WRITE MERGED IMAGE
 
+#ifdef JPG
+	stbi_write_jpg(filenames[4], mw, mh, 3, merged, 90);
+#else
 	stbi_write_png(filenames[4], mw, mh, 3, merged, 0);
+#endif
 	printf("Wrote %s\n", filenames[4]);
 
 	for (int i = 0; i < 4; i++)

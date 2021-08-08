@@ -4,10 +4,17 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "settings.h"
 #include "thpool.h"
 #include "imgmerge.h"
 
 #define PATH_LEN 256
+
+#ifdef JPG
+#define EXT "jpg"
+#else
+#define EXT "png"
+#endif
 
 bool file_exists(char* filename) { return access(filename, R_OK | W_OK) == 0; }
 
@@ -51,11 +58,11 @@ int main(int argc, char* argv[]) {
 			char *d = calloc(PATH_LEN, sizeof(char*));
 			char *o = calloc(PATH_LEN, sizeof(char*));
 
-			sprintf(a, "./%s/images/0/%s/%d_%d.png", path, from, bx + 0, by + 0);
-			sprintf(b, "./%s/images/0/%s/%d_%d.png", path, from, bx + 1, by + 0);
-			sprintf(c, "./%s/images/0/%s/%d_%d.png", path, from, bx + 0, by + 1);
-			sprintf(d, "./%s/images/0/%s/%d_%d.png", path, from, bx + 1, by + 1);
-			sprintf(o, "./%s/images/0/%s/%d_%d.png", path, to  , x     , y     );
+			sprintf(a, "./%s/images/0/%s/%d_%d." EXT, path, from, bx + 0, by + 0);
+			sprintf(b, "./%s/images/0/%s/%d_%d." EXT, path, from, bx + 1, by + 0);
+			sprintf(c, "./%s/images/0/%s/%d_%d." EXT, path, from, bx + 0, by + 1);
+			sprintf(d, "./%s/images/0/%s/%d_%d." EXT, path, from, bx + 1, by + 1);
+			sprintf(o, "./%s/images/0/%s/%d_%d." EXT, path, to  , x     , y     );
 
 			int bc = 0;
 			if (!file_exists(a)) { free(a); a = blank; bc++; }
