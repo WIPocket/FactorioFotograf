@@ -1,4 +1,11 @@
-notes
-imgmerge
-web/images
-web/mapInfo.json
+*
+
+!docs
+!src
+!util
+!.gitignore
+!.gitmodules
+!readme.md
+!demo.png
+!loc.sh
+!run.sh
