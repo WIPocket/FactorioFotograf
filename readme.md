@@ -2,7 +2,7 @@
 
 [![demo image](./demo.png)](https://randacek.dev/m/f/protab/)
 
-Minimalistic and easy to customize Factorio map generator for Linux in 390 lines of code.  
+Minimalistic and easy to customize Factorio map generator for Linux in 377 lines of code.  
 
 ## Examples
 - [Protab](https://randacek.dev/m/f/protab/) - Large vanilla map. Less than 4 minutes to generate on 12 thread 2Ghz cpu.

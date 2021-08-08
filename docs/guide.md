@@ -2,16 +2,15 @@ If you find something unclear, feel free to message me on discord (`Proicop#3264
 
 # Setup instruction
 
-- Download the code
-  - `git clone --recursive https://github.com/ProkopRandacek/FactorioFotograf.git`
-  - Note: You cannot just download the zip from Github because that won't download the submodules
+- [Download the latest release](https://github.com/ProkopRandacek/FactorioFotograf/releases/)
+- Extract the zip into a folder
 - Make sure that you have:
   - `standalone factorio`
   - `make`
   - `gcc`
   - `jq`
   - `convert` (imagemagick)
-- The `run.sh` script is in the repository root
+- From this folder you can run the `run.sh` script
 
 # Vanilla save
 
