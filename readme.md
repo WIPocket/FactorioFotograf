@@ -2,7 +2,8 @@
 
 [![demo image](./demo.png)](https://randacek.dev/m/f/protab/)
 
-Minimalistic and easy to customize Factorio map generator for Linux in 377 lines of code.  
+Minimalistic and easy to customize Factorio map generator for Linux in 360 lines of code.  
+Generating requires almost no additional ram. If you can load the save, you can create a map from it.  
 
 ## Examples
 - [Protab](https://randacek.dev/m/f/protab/) - Large vanilla map. Less than 4 minutes to generate on 12 thread 2Ghz cpu.
@@ -25,7 +26,5 @@ Non-headless Factorio that you can run from terminal by `factorio`, `jq`, `conve
 - [x] PNG & JPEG export
 - [ ] Map time lapse capturing
 - [ ] Multiple surfaces
-- [ ] Really large maps run out of ram when taking screenshots
-- [ ] Achieve optimal C code
-  - [ ] Read image bitmap straight into the final position in ram to avoid copying
+- [ ] Read image bitmap straight into the final position in ram to avoid copying
 

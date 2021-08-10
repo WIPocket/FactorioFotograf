@@ -4,8 +4,6 @@ WARNS  += -Wall -Wunused-parameter -Wshadow -Wundef -Wunreachable-code -Wno-misl
 LDLIBS += -lm -lpthread
 CFLAGS += -Istb/ -IC-Thread-Pool/
 
-CC ?= gcc
-
 TARGET = imgmerge
 
 all: $(TARGET)
