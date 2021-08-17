@@ -4,8 +4,8 @@
     "title": "Fotograf",
     "author": "Proicop",
     "contact": "prokop@randacek.dev",
-    "homepage": "https://github.com/prokoprandacek/FactorioFotograf",
-    "description": "Generates a screenshot array",
+    "homepage": "https://github.com/ProkopRandacek/FactorioFotograf",
+    "description": "Web map generator",
     "license": "GNU General Public License v2.0",
     "factorio_version": "1.1",
     "dependencies": []

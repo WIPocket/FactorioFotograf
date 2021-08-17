@@ -14,8 +14,9 @@ L.tileLayer('./images/0/{z}/{x}_{y}' + ext, {
 	attribution: '<a href="https://github.com/ProkopRandacek/FactorioFotograf">FactorioFotograf</a>',
 	maxZoom: 8,
 	minZoom: 0,
+	zoomReverse: true,
 	zoomOffset: 0,
 	noWrap: true,
-	tileSize: mapInfo.pixels_per_tile * 32,
+	tileSize: mapInfo.ppt * 32,
 }).addTo(map)
 
