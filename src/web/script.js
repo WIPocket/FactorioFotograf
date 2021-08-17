@@ -1,6 +1,6 @@
 ext = ".jpg"
 
-var mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.js
+var mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.js (generated at runtime)
 var permalink = L.Permalink.getMapLocation(5, [0, 0]);
 var map = L.map('map', {
 	crs: L.CRS.Simple,

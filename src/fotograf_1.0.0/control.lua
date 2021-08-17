@@ -1,43 +1,83 @@
 ext = ".jpg"
 pixels_per_tile = 32  -- How many pixels per tile to use in the screenshot. Game textures are not bigger than 64 pixels per tile.
-min_dist_to_smt = 128 -- How far away from player's structures should the tiles still be rendered
+border          = 128
 
 image_resolution = 32 * pixels_per_tile
-zoom = pixels_per_tile / 32 -- not sure if this number is different on different graphics settings
-maxx, maxy, minx, miny = -9999999999, -9999999999, 9999999999, 9999999999
-tick = 0
-script.on_event(defines.events.on_tick, function(event)
-	if tick == 0 then
-		game.print("Taking screenshots...")
-	elseif tick == 1 then
-		for c in game.surfaces[1].get_chunks() do
-			position = {c.x * 32 + 16, c.y * 32 + 16}
-			if #game.surfaces[1].find_entities_filtered{force=game.players[1].force, position=position, radius=min_dist_to_smt, limit=1} > 0 then
-				maxx = math.max(maxx, c.x)
-				maxy = math.max(maxy, c.y)
-				minx = math.min(minx, c.x)
-				miny = math.min(miny, c.y)
-				game.take_screenshot{
+zoom = pixels_per_tile / 32
+state = -1
+capture_caller = nil
+
+function capture(layer)
+	n = (2 ^ (layer - 1)) -- 1, 2, 4, 8, 16, 32, ...
+	box_size = n * 32
+	for c in game.surfaces[1].get_chunks() do
+		--game.print(c.x .. " " .. c.y .. " " .. layer)
+		if (c.x % n == 0) and (c.y % n == 0) then
+			tl = {c.x * 32           , c.y * 32}
+			br = {c.x * 32 + box_size, c.y * 32 + box_size}
+			if game.surfaces[1].count_entities_filtered{
+				force=game.players[1].force, 
+				area={tl, br},
+				limit=1
+			} > 0 then
+				--[[game.take_screenshot{
 					resolution = {image_resolution, image_resolution},
-					position = position, -- position defines the middle of the screenshot
-					show_entity_info = true,
-					path = "images/0/8/" .. c.x .. "_" .. c.y .. ext,
-					quality = 90,
+					position = {c.x * box_size + box_size / 2, c.y * box_size + box_size / 2}, -- position defines the middle of the screenshot
+					path = "fotograf/images/" .. 0 .. "/" .. layer .. "/" .. c.x .. "_" .. c.y .. ext,
 					zoom = zoom,
-					daytime = 1.0
+					show_entity_info = true,
+					quality = 90,
+					daytime = 1.0,
+					allow_in_replay = false,
+					show_gui = false,
+				}]]
+				rendering.draw_rectangle{
+					color = {1.0, 1.0, 0.0},
+					filled = false,
+					left_top = tl,
+					right_bottom = br,
+					time_to_live = 600,
+					surface = game.surfaces[1],
+				}
+				rendering.draw_rectangle{
+					color = {0.0, 0.1, 0.0, 0.1},
+					filled = true,
+					left_top = tl,
+					right_bottom = br,
+					time_to_live = 600,
+					surface = game.surfaces[1],
 				}
 			end
 		end
+	end
+end
+
+script.on_event(defines.events.on_tick, function(event)
+	if state == 0 then
+		game.print("Taking screenshots...")
+		state = state + 1
+	elseif state == 1 then
+		capture(2)
+		--capture(2)
 		game.write_file("mapInfo.json", game.table_to_json({
-			maxx = maxx, maxy = maxy, minx = minx, miny = miny,
 			pixels_per_tile = pixels_per_tile,
-			image_resolution = image_resolution,
 		}))
 		game.set_wait_for_screenshots_to_finish()
-	elseif tick == 2 then
+		state = state + 1
+	elseif state == 2 then
 		game.print("done")
 		game.write_file("done", "done")
+		state = -1
 	end
-	tick = tick + 1
+end)
+
+commands.add_command("foto1", nil, function(command)
+	--state = 0
+	capture(2)
+end)
+
+commands.add_command("foto2", nil, function(command)
+	--state = 0
+	capture(3)
 end)
 
