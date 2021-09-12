@@ -4,6 +4,5 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
-
 find $1 -name "*.png" | parallel --bar optipng -o 2 {}
 

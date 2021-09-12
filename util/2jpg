@@ -6,5 +6,3 @@ fi
 
 find $1 -name "*.png" | parallel --bar "mogrify -quality 40 -format jpg {} && command rm {}"
 
-sed -i "1s/.*/ext = \".jpg\"/" $1/script.js # modify the js to use jpgs instead of pngs
-
