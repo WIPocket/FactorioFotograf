@@ -1,14 +1,14 @@
 ext = ".jpg"
 
 var mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.js
-var permalink = L.Permalink.getMapLocation(5, [0, 0]);
+var permalink = link.getMapLocation(5, [0, 0]);
 var map = L.map('map', {
 	crs: L.CRS.Simple,
 	center: permalink.center,
     zoom: permalink.zoom
 })
 
-L.Permalink.setup(map);
+link.setup(map);
 
 L.tileLayer('./images/0/{z}/{x}_{y}' + ext, {
 	attribution: '<a href="https://github.com/ProkopRandacek/FactorioFotograf">FactorioFotograf</a>',

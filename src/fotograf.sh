@@ -4,6 +4,13 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
+factorio="factorio"
+if [ $# -eq 2 ]; then
+	factorio=$2
+	echo "Used '$factorio' as the factorio binary"
+fi
+
+
 save=$1
 
 if [ "$2" = "--png" ]; then
@@ -64,7 +71,7 @@ rm ~/.factorio/script-output/done -f
 rm ./$save -rf
 mkdir -p $save
 
-factorio --load-game $save 1> /dev/null&
+$factorio --load-game $save 1> /dev/null&
 fac_pid="$!"
 
 echo "Waiting for the game to finish capturing..."

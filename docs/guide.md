@@ -33,3 +33,23 @@ If you find something unclear, feel free to message me on discord (`Proicop#3264
 - Close the game
 - Continue as if this was a Vanilla save (From step 4)
 
+# Steam version of Factorio
+If you wish to use the steam version of Factorio, append the `run.sh` script call with the path of the steam factorio executable.  
+For example, if your steam is installed into the default folder, the call would look like this:
+```sh
+./run save-name ~/.steam/steam/steamapps/common/Factorio/bin/x64/factorio
+```
+notes:
+- Your steam folder might be on a different place if you installed steam form flatpak.
+- You have to manually confirm that you want to start factorio with the command line arguments from FactorioFotograf.
+- FactorioFotograf will fail to kill Factorio after the capture is done which is not a big deal. Just close the game manually (make sure not to save the game).
+
+# `make: *** No rule to make target 'C-Thread-Pool/thpool.o', needed by 'imgmerge'.  Stop.`
+# `./fotograf.sh: line 56: ./imgmerge: No such file or directory`
+You did not clone the repository with the `--recursive` flag  
+You can fix that by running:
+```sh
+git submodule init
+git submodule update
+```
+
