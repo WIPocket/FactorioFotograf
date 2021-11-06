@@ -1,7 +1,7 @@
 #!/bin/sh
 zip --symlinks release.zip \
-	run.sh readme.md LICENSE docs/* util/* \
-	src/fotograf.sh src/imgmerge src/blank.png \
+	run readme.md LICENSE docs/* util/* \
+	src/fotograf.py src/imgmerge src/blank.png \
 	src/web/* \
 	src/fotograf_1.0.0/* \
 	src/c/*.[ch] src/c/Makefile \
