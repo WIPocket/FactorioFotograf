@@ -22,9 +22,9 @@ Generating requires almost no additional ram. If you can load the save, you can 
 [Detailed usage guide](./docs/guide.md)
 
 ## Deps
-Non-headless Factorio that you can run from terminal by `factorio`, `jq`, `convert` (imagemagick) and `gcc`.  
+Non-headless Factorio, C compiler, Python3, Python Pillow.
   
-(Arch: `yay -S factorio jq imagemagick gcc --needed`)  
+(Arch: `yay -S factorio python gcc --needed`)  
 
 ## Features
 - [x] Web

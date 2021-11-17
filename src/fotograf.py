@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, argparse, time, shutil, json, subprocess
+import os, argparse, time, shutil, json, subprocess, webbrowser
 from datetime import date
 from sys import platform
 from PIL import Image
@@ -26,6 +26,7 @@ parser.add_argument("--map-name",  help="How to name the map. Same as SAVE_NAME 
 parser.add_argument("--png",       help="Use the PNG format instead of JPEG", action="store_true")
 parser.add_argument("--fac-bin",   help="Specify factorio binary", type=str, default="factorio")
 parser.add_argument("--overwrite", help="Overwrites existing files if necessary", action="store_true")
+parser.add_argument("--view",      help="Opens the map in the default web browser", action="store_true")
 args = parser.parse_args()
 
 if args.save_name == None:
@@ -140,5 +141,6 @@ for i in range(8, 0, -1):
     os.makedirs(f"{args.map_name}/images/0/{i -1}/", exist_ok=True)
     subprocess.run(map(str, ["./imgmerge", args.map_name, i, i - 1, maxx, maxy, minx, miny]))
 
-msg("Done")
+msg(f"Done. Output written into {PWD}/{args.map_name}/")
+if args.view: webbrowser.open(f"file://{PWD}/{args.map_name}/index.html")
 
