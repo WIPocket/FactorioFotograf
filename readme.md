@@ -18,7 +18,7 @@ Generating requires almost no additional ram. If you can load the save, you can 
 - Heavy jpg compression (took 40 seconds) using ImageMagick (336 Mb - 3390 1024x1024 images)
 
 ## Usage
-`./run save-name [--help] [--png]`  
+`./run save-name [--help]`  
 [Detailed usage guide](./docs/guide.md)
 
 ## Deps
