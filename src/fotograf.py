@@ -23,13 +23,13 @@ if platform != "linux":
 start_time = time.time()
 HOME = os.path.expandvars("${HOME}")
 PWD = os.path.dirname(__file__)
-modlist_path = f"{HOME}/.factorio/mods/mod-list.json"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--save-name", help="The Factorio save to load", type=str)
 parser.add_argument("--map-name",  help="Name of the map folder. Defaults to SAVE_NAME", type=str)
 parser.add_argument("--png",       help="Export PNGs instead of JPEGs", action="store_true")
-parser.add_argument("--fac-bin",   help="Specify factorio binary", type=str, default="factorio")
+parser.add_argument("--fac-base",   help="Specify Factorio base path", type=str, default=f"{HOME}/.factorio")
+parser.add_argument("--fac-bin",   help="Specify Factorio binary", type=str, default="factorio")
 parser.add_argument("--overwrite", help="Overwrites existing files if necessary", action="store_true")
 parser.add_argument("--view",      help="Opens the map in the default web browser", action="store_true")
 args = parser.parse_args()
@@ -59,7 +59,7 @@ if os.path.isdir(PWD + "/" + args.map_name):
 
 # Enables/Disables our mod in the modlist
 def edit_modlist(newval: bool) -> None:
-    with open(modlist_path, 'r+') as file:
+    with open(f"{args.fac_base}/mods/mod-list.json", 'r+') as file:
         modlist = json.loads(file.read())
         for mod in modlist["mods"]:
             if mod["name"] == "fotograf":
@@ -89,7 +89,7 @@ with open(f"{PWD}/fotograf_1.0.0/control.lua", "r+") as file:
 
 msg("Injecting FactorioFotograf into the game")
 link_target = f"{PWD}/fotograf_1.0.0"
-link_name = f"{HOME}/.factorio/mods/fotograf_1.0.0"
+link_name = f"{args.fac_base}/mods/fotograf_1.0.0"
 if os.path.exists(link_name): os.remove(link_name)
 os.symlink(link_target, link_name, target_is_directory=True)
 
@@ -97,23 +97,23 @@ msg("Enabling FactorioFotograf mod")
 edit_modlist(True)
 
 msg("Clearing script output")
-for d in [f"{HOME}/.factorio/script-output/images/", f"{PWD}/{args.map_name}"]:
+for d in [f"{args.fac_base}/script-output/images/", f"{PWD}/{args.map_name}"]:
     if os.path.exists(d):
         shutil.rmtree(d)
-for f in [f"{HOME}/.factorio/script-output/mapInfo.json", f"{HOME}/.factorio/script-output/done"]:
+for f in [f"{args.fac_base}/script-output/mapInfo.json", f"{args.fac_base}/script-output/done"]:
     if os.path.exists(f):
         os.remove(f)
 shutil.copytree(f"{PWD}/web/", args.map_name)
 
 msg("Starting Factorio")
-factorio_command = ["factorio", "--load-game", args.save_name] if args.save_name != None else ["factorio"]
+factorio_command = [args.fac_bin, "--load-game", args.save_name] if args.save_name != None else [args.fac_bin]
 factorio_process = subprocess.Popen(factorio_command, stdout=subprocess.PIPE)
 
 msg("Waiting for Factorio")
-while not os.path.exists(f"{HOME}/.factorio/script-output/done"):
-    if os.path.exists(f"{HOME}/.factorio/script-output/images/0"):
+while not os.path.exists(f"{args.fac_base}/script-output/done"):
+    if os.path.exists(f"{args.fac_base}/script-output/images/0"):
         count = 0
-        for _, _, files in os.walk(f"{HOME}/.factorio/script-output/images/0"):
+        for _, _, files in os.walk(f"{args.fac_base}/script-output/images/0"):
             count += len(files)
         msg(f"{count} images taken")
     time.sleep(1)
@@ -121,8 +121,8 @@ msg("Capturing done. Terminating Factorio")
 factorio_process.terminate()
 
 msg("Moving images")
-shutil.move(f"{HOME}/.factorio/script-output/images/", f"{args.map_name}/")
-with open(f"{HOME}/.factorio/script-output/mapInfo.json") as file:
+shutil.move(f"{args.fac_base}/script-output/images/", f"{args.map_name}/")
+with open(f"{args.fac_base}/script-output/mapInfo.json") as file:
     map_info_text = file.read()
 map_info = json.loads(map_info_text)
 image_resolution = map_info["image_resolution"]
