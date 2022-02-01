@@ -1,7 +1,9 @@
 #!/usr/bin/python3
-import os, argparse, time, shutil, json, subprocess, webbrowser
+import os, argparse, shutil, json, subprocess
 from datetime import date
 from sys import platform
+
+from log import msg, die
 
 try:
     from PIL import Image
@@ -9,51 +11,38 @@ except ImportError:
     print("PIL Python package not found!\nrun `pip install Pillow`")
     exit(1)
 
-def msg(text: str) -> None:
-    start = f"FF {(time.time() - start_time):.2f}".ljust(11)
-    print(f"{start} {text}")
-
-def die(text: str) -> None:
-    msg(f"ERROR: {text}")
-    exit(1)
-
-if platform != "linux":
-    msg("Factorio Fotograf was not tested outside of Linux.")
-
-start_time = time.time()
 HOME = os.path.expandvars("${HOME}")
 PWD = os.path.dirname(__file__)
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--save-name", help="The Factorio save to load", type=str)
-parser.add_argument("--map-name",  help="Name of the map folder. Defaults to SAVE_NAME", type=str)
-parser.add_argument("--png",       help="Export PNGs instead of JPEGs", action="store_true")
-parser.add_argument("--fac-base",   help="Specify Factorio base path", type=str, default=f"{HOME}/.factorio")
-parser.add_argument("--fac-bin",   help="Specify Factorio binary", type=str, default="factorio")
-parser.add_argument("--overwrite", help="Overwrites existing files if necessary", action="store_true")
-parser.add_argument("--view",      help="Opens the map in the default web browser", action="store_true")
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("--save",      help="The Factorio save to load" , type=str)
+parser.add_argument("--output",    help="Output directory"          , type=str)
+parser.add_argument("--fac-base",  help="Specify Factorio base path", type=str, default=f"{HOME}/.factorio")
+parser.add_argument("--fac-bin",   help="Specify Factorio binary"   , type=str, default="/usr/bin/factorio")
+parser.add_argument("--png",       help="Use PNGs instead of JPEGs" , action="store_true")
+parser.add_argument("--overwrite", help="Overwrite output directory", action="store_true")
 args = parser.parse_args()
 
 """ ARGUMENT PARSING LOGIC """
 
-if args.save_name == None:
+if args.save == None:
     msg("No save name provided. You will have to load the save manually when Factorio starts.")
 
-if args.map_name == None:
-    if args.save_name == None:
+if args.output == None:
+    if args.save == None:
         timestring = date.today().strftime("%d%m%Y%H%M%S")
-        args.map_name = f"unnamed_map_{timestring}"
-        msg(f"No map or save name provided. Using '{args.map_name}' as map name")
+        args.output = f"unnamed_map_{timestring}"
+        msg(f"No output or save name provided. Using '{args.output}' as output directory")
     else:
         msg("No map name provided. Using save name as map name.")
-        args.map_name = args.save_name
+        args.output = args.save
 
-if os.path.isdir(PWD + "/" + args.map_name):
+if os.path.isdir(PWD + "/" + args.output):
     if not args.overwrite:
-        die(f"Error: the output directory '{args.map_name}' already exists. Use --overwrite argument to override existing directories")
+        die(f"Error: the output directory '{args.output}' already exists. Use --overwrite argument to override existing directories")
     else:
-        msg(f"Deleting directory '{PWD}/{args.map_name}'")
-        shutil.rmtree(PWD + "/" + args.map_name)
+        msg(f"Overwriting directory '{PWD}/{args.output}'")
+        shutil.rmtree(PWD + "/" + args.output)
 
 """ END OF ARGUMENT PARSING LOGIC """
 
@@ -68,6 +57,7 @@ def edit_modlist(newval: bool) -> None:
         else:
             modlist["mods"].append({"name": "fotograf", "enabled": newval})
         file.seek(0)
+        file.truncate(0)
         file.write(json.dumps(modlist))
         file.truncate()
 
@@ -77,15 +67,16 @@ msg("Start")
 with open(f"{PWD}/c/settings.h", "w") as file:
     file.write("#define " + ("PNG" if args.png else "JPG"))
 
-# The Lua code also needs to set a PNG/JPEG flag
+# The Lua code also needs to have a PNG/JPEG flag
 with open(f"{PWD}/fotograf_1.0.0/control.lua", "r+") as file:
     lines = file.readlines()
     lines[0] = "ext = \"" + (".png" if args.png else ".jpg") + "\"\n"
     file.seek(0)
+    file.truncate(0)
     file.writelines(lines)
     file.truncate()
 
-# The following code is kinda commented with the logger messages
+
 
 msg("Injecting FactorioFotograf into the game")
 link_target = f"{PWD}/fotograf_1.0.0"
@@ -97,16 +88,16 @@ msg("Enabling FactorioFotograf mod")
 edit_modlist(True)
 
 msg("Clearing script output")
-for d in [f"{args.fac_base}/script-output/images/", f"{PWD}/{args.map_name}"]:
+for d in [f"{args.fac_base}/script-output/images/", f"{PWD}/{args.output}"]:
     if os.path.exists(d):
         shutil.rmtree(d)
 for f in [f"{args.fac_base}/script-output/mapInfo.json", f"{args.fac_base}/script-output/done"]:
     if os.path.exists(f):
         os.remove(f)
-shutil.copytree(f"{PWD}/web/", args.map_name)
+shutil.copytree(f"{PWD}/web/", args.output) # copy the web template into the output directory
 
 msg("Starting Factorio")
-factorio_command = [args.fac_bin, "--load-game", args.save_name] if args.save_name != None else [args.fac_bin]
+factorio_command = [args.fac_bin, "--load-game", args.save] if args.save != None else [args.fac_bin]
 factorio_process = subprocess.Popen(factorio_command, stdout=subprocess.PIPE)
 
 msg("Waiting for Factorio")
@@ -121,17 +112,17 @@ msg("Capturing done. Terminating Factorio")
 factorio_process.terminate()
 
 msg("Moving images")
-shutil.move(f"{args.fac_base}/script-output/images/", f"{args.map_name}/")
+shutil.move(f"{args.fac_base}/script-output/images/", f"{args.output}/")
 with open(f"{args.fac_base}/script-output/mapInfo.json") as file:
-    map_info_text = file.read()
-map_info = json.loads(map_info_text)
-image_resolution = map_info["image_resolution"]
-Image.new(mode="RGBA", size=(image_resolution, image_resolution), color=(0, 0, 0, 0)).save(f"{args.map_name}/images/blank.png")
+    map_info_text = file.read() # we read map info because we need the map bounds ({max,min}{x,y}) for the zooming program
+map_info = json.loads(map_info_text) 
+image_resolution = map_info["image_resolution"] # creating the blank tile image
+Image.new(mode="RGBA", size=(image_resolution, image_resolution), color=(0, 0, 0, 0)).save(f"{args.output}/images/blank.png")
 
 msg("Creating web files")
-with open(f"{args.map_name}/mapInfo.js", "w") as file:
+with open(f"{args.output}/mapInfo.js", "w") as file:
     file.write(f"mapInfo = '{map_info_text}'\n")
-with open(f"{args.map_name}/script.js", "r+") as file: # the script.js again need a PNG/JPEG flag set
+with open(f"{args.output}/script.js", "r+") as file: # the script.js again need a PNG/JPEG flag set
     lines = file.readlines()
     lines[0] = "ext = \"" + (".png" if args.png else ".jpg") + "\"\n"
     file.seek(0)
@@ -141,20 +132,14 @@ with open(f"{args.map_name}/script.js", "r+") as file: # the script.js again nee
 msg("Restoring mod settings")
 edit_modlist(False)
 
-msg("Compiling image merge tool")
-# TODO: it would be nice not to need a C development
-# tool chain to be present on the machine to run this script
-back = os.getcwd()
-os.chdir(PWD + "/c/")
-make_process = subprocess.run(["make"], stdout=subprocess.PIPE)
-os.chdir(back)
+msg("Compiling image merge tool") # TODO: it would be nice not to need gcc and make installed to run this script
+make_process = subprocess.run(["make", "-C", PWD+"/c/"], stdout=subprocess.PIPE)
 
 msg("Zooming")
 maxx, maxy, minx, miny = map_info["maxx"], map_info["maxy"], map_info["minx"], map_info["miny"]
 for i in range(8, 0, -1):
-    os.makedirs(f"{args.map_name}/images/0/{i -1}/", exist_ok=True)
-    subprocess.run(map(str, ["./imgmerge", args.map_name, i, i - 1, maxx, maxy, minx, miny]))
+    os.makedirs(f"{args.output}/images/0/{i -1}/", exist_ok=True)
+    subprocess.run(map(str, ["./imgmerge", args.output, i, i - 1, maxx, maxy, minx, miny]))
 
-msg(f"Done. Output written into {PWD}/{args.map_name}/")
-if args.view: webbrowser.open(f"file://{PWD}/{args.map_name}/index.html")
+msg(f"Done. Output written into {PWD}/{args.output}/")
 
