@@ -60,12 +60,7 @@ bool file_exists(char* filename) {
 
 bool is_blank(char* str) {
 	size_t l = strlen(str);
-	bool res = str[l-5] == 'k'; // check for the 'k' in 'blank.{png,jpg}'
-
-	if (res)
-		printf("ITS BLANK");
-
-	return res;
+	return str[l-5] == 'k'; // check for the 'k' in 'blank.{png,jpg}'
 }
 
 void __attribute__((hot)) go(struct worker_thread *t UNUSED, struct work *wrk) {
