@@ -10,9 +10,6 @@ INCLUDE = -Ideps/stb/include
 CFLAGS  += -std=gnu17 $(WARNS) -finline-limit=5000
 LDFLAGS += -lm -lpthread
 
-CFLAGS  += `pkgconf --cflags libucw libucw-json`
-LDFLAGS += `pkgconf --libs   libucw libucw-json`
-
 all: $(TARGET)
 
 run: $(TARGET)
@@ -26,5 +23,6 @@ deepclean:: clean
 help:
 	@cat readme.md
 
+include Makedeps
 include Makerules
 
