@@ -1,0 +1,36 @@
+# vim: ft=make
+
+S ?= src
+O ?= obj
+
+SRCS = $(shell find -L $(S)/ -name \*.c) # c source files
+
+OBJS = $(SRCS:$(S)/%.c=$(O)/%.o) # c object files
+DEPS = $(SRCS:$(S)/%.c=$(O)/%.d) # makefile dependency files
+
+ASSETS  = $(shell find $(S)/ -name \*.asset) # asset files that should be embedded
+ASSETSH = $(addsuffix .h,$(ASSETS))          # asset headers generated from assets
+
+$(ASSETSH): $(S)/%.asset.h: $(S)/%.asset
+	@mkdir -p -- $(dir $@)
+	@echo -e "EM\t$@"
+	@./biem $< $@
+
+# C object building rule
+$(OBJS): $(O)/%.o: $(S)/%.c $(ASSETSH)
+	@mkdir -p -- $(dir $@)
+	@echo -e "CC\t$@"
+	@$(CC) $(CFLAGS) $(INCLUDE) -MD -o $@ -c $<
+	
+# executable linking rule
+$(TARGET): $(LDLIBS) $(OBJS)
+	@mkdir -p -- $(dir $@)
+	@echo -e "LD\t$@"
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS) $(LDFLAGS)
+
+clean::
+	$(RM) -r -- $(O)
+	$(RM) -- $(ASSETSH)
+
+-include $(DEPS)
+

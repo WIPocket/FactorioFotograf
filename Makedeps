@@ -1,0 +1,20 @@
+# vim: ft=make
+
+LIBUCW_DIR          ?= ./deps/libucw
+LIBUCW_LIBRARY      ?= $(LIBUCW_DIR)/run/lib/libucw-6.5.a
+LIBUCW_LIBRARY_JSON ?= $(LIBUCW_DIR)/run/lib/libucw-json-6.5.a
+
+libucw: $(LIBUCW_LIBRARY)
+
+$(LIBUCW_LIBRARY_JSON):
+$(LIBUCW_LIBRARY):
+	cd $(LIBUCW_DIR) && ./configure -CONFIG_DOC
+	$(MAKE) -C $(LIBUCW_DIR)
+
+deepclean::
+	$(MAKE) clean -C $(LIBUCW_DIR)
+
+
+LDLIBS  += $(LIBUCW_LIBRARY_JSON) $(LIBUCW_LIBRARY) 
+INCLUDE += -I$(LIBUCW_DIR)/run/include
+

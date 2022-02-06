@@ -1,6 +1,6 @@
-[submodule "src/c/stb"]
-	path = src/c/stb
+[submodule "deps/stb"]
+	path = deps/stb
 	url = https://github.com/nothings/stb.git
-[submodule "src/c/C-Thread-Pool"]
-	path = src/c/C-Thread-Pool
-	url = https://github.com/Pithikos/C-Thread-Pool.git
+[submodule "deps/libucw"]
+	path = deps/libucw
+	url = git://git.ucw.cz/libucw.git

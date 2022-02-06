@@ -1,42 +1,28 @@
 If you find something unclear, feel free to message me on discord (`Proicop#3264`), create issue or send a pull request.
 
-# Dependencies
+# Instruction
 
-- Factorio (`/usr/bin/factorio` or specify with `--fac-bin PATH`)
-- `make`
-- `gcc`
-- `python`
-- Python pillow (`pip install pillow`)
-- You have to clone the repo with the `--recursive` flag.
-
-# Usage
-
-- Open the game
-- Make sure that all mods that you have in the save are enabled
+- [Download the latest release binary](https://github.com/ProkopRandacek/FactorioFotograf/releases/)
+- Make sure that you have factorio (not headless)
+- Manually open Factorio
+- Make sure that all mods that are in the target save are enabled
 - Close the game
-- Run the `run` script like this: `./run --save factorio-save-name --output output-directory`
-  - If Factorio can't find the save, you can load any save manually when Factorio is launched
-  - Run `./run --help` for all available arguments
-- Factorio will open, load the save and start taking screenshots.
+- Run the `ff` binary that you downloaded
+  - Note: run `./ff --help` for all available arguments
+- Factorio will open
+- Manutall open the save you want to make a map from
+- FactorioFotograf will start capturing screenshots
 - After capturing, FactorioFotograf will start generating lower zoom levels
+- The final web is in `.factorio/script-output/FF`
 
 # Steam version of Factorio
-
-To run a steam version of Factorio, overwrite the the default factorio path by using the `--fac-bin BINARY` flag.
-In case of steam Factorio, that would be `--fac-bin ~/.steam/steam/steamapps/common/Factorio/bin/x64/factorio`.
-
+If you wish to use the steam version of Factorio, append the `run` script call with the path of the steam factorio executable.
+For example, if your steam is installed into the default folder, the call would look like this:
+```sh
+./ff --fac-bin ~/.steam/steam/steamapps/common/Factorio/bin/x64/factorio
+```
 notes:
 - Your path might be different if you installed steam form flatpak.
 - You might have to manually confirm that you want to start Factorio with the command line arguments from FactorioFotograf.
 - FactorioFotograf will fail to kill Factorio after the capture is done which is not a big deal. Just close the game manually (make sure not to save the game).
-
-# `No rule to make target 'C-Thread-Pool/thpool.o', needed by 'imgmerge'`
-
-You did not clone the repository with the `--recursive` flag  
-You can fix that by running:
-```sh
-git submodule init
-git submodule update
-```
-somewhere in the repository directory.
 
