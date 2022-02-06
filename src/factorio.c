@@ -26,6 +26,7 @@ void run_factorio(char* fac_bin, char* done_file) {
 			if (done_fd != NULL) {
 				msg(L_DEBUG, "Done file found. Breaking the loop");
 				fclose(done_fd);
+				remove(done_file);
 				kill(fk, SIGTERM);
 				break;
 			}

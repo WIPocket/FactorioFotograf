@@ -1,9 +1,9 @@
-ext = "jpg" -- the exact positions of the `j` `p` `g` bytes in this file has to be unchanged
 -- vim: ft=lua
-pixels_per_tile = 32  -- How many pixels per tile to use in the screenshot. Game textures are not bigger than 64 pixels per tile.
-min_dist_to_smt = 128 -- How far away from player's structures should the tiles still be rendered
+ext = "%s" -- this is replaced by fprintf in C
+pixels_per_tile = %d -- How many pixels per tile to use in the screenshot. Game textures are not bigger than 64 pixels per tile.
+min_dist_to_smt = %d -- How far away from player's structures should the tiles still be rendered
 
-image_resolution = 32 * pixels_per_tile
+image_resolution = 32 * pixels_per_tile -- image always contains 32 tiles
 zoom = pixels_per_tile / 32 -- not sure if this number is different on different graphics settings
 maxx, maxy, minx, miny = -9999999999, -9999999999, 9999999999, 9999999999
 tick = 0
@@ -29,7 +29,7 @@ script.on_event(defines.events.on_tick, function(event)
 				}
 			end
 		end
-		game.write_file("FF/mapInfo.json", game.table_to_json({
+		game.write_file("FF/map_info.json", game.table_to_json({
 			maxx = maxx, maxy = maxy, minx = minx, miny = miny,
 			pixels_per_tile = pixels_per_tile,
 			image_resolution = image_resolution,

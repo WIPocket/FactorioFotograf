@@ -55,7 +55,7 @@ void modlist_set(bool new_value) {
 	json_array_append(entry_array, new_entry);
 }
 
-void modlist(char* path, bool val) {
+void modlist(const char* path, bool val) {
 	modlist_read(path);
 	modlist_set(val);
 	modlist_write(path);
