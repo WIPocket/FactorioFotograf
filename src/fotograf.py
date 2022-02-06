@@ -22,6 +22,7 @@ parser.add_argument("--fac-base",  help="Specify Factorio base path", type=str, 
 parser.add_argument("--fac-bin",   help="Specify Factorio binary"   , type=str, default="/usr/bin/factorio")
 parser.add_argument("--png",       help="Use PNGs instead of JPEGs" , action="store_true")
 parser.add_argument("--overwrite", help="Overwrite output directory", action="store_true")
+parser.add_argument("--wrap",      help="A wrapper, like xvfb-run"  , type=str)
 args = parser.parse_args()
 
 """ ARGUMENT PARSING LOGIC """
@@ -99,6 +100,8 @@ shutil.copytree(f"{PWD}/web/", args.output) # copy the web template into the out
 
 msg("Starting Factorio")
 factorio_command = [args.fac_bin, "--load-game", args.save] if args.save != None else [args.fac_bin]
+if args.wrap is not None:
+  factorio_command.insert(0, args.wrap)
 factorio_process = subprocess.Popen(factorio_command, stdout=subprocess.PIPE)
 
 msg("Waiting for Factorio")
