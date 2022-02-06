@@ -147,5 +147,7 @@ int main(int argc UNUSED, char* argv[]) {
 		work_queue_cleanup(&q);
 		worker_pool_cleanup(&pool);
 	}
+
+	msg(L_INFO, "Done! Map is in '%s'", ff_dir);
 }
 
