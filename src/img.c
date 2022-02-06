@@ -27,9 +27,16 @@
 
 extern bool png; // from main.c; if we are working with PNGs instead of JPEGs
 
+// A work payload for the threads
+struct w {
+	struct work w;
+	char* filenames[5];
+	int x, y;
+};
+
 void create_blank(char* path, int s, bool png) {
 	msg(L_DEBUG, "Writting blank %s image %dx%d to '%s'", png ? "png" : "jpg", s, s, path);
-	int x = 1, y = 1, n = 3;
+	int x, y, n;
 	// sizeof-1 because biem automatically appends terminating zero at the end
 	u8* blank = stbi_load_from_memory(blank_png_asset, sizeof(blank_png_asset)-1, &x, &y, &n, 3);
 
@@ -53,16 +60,15 @@ bool file_exists(char* filename) {
 
 bool is_blank(char* str) {
 	size_t l = strlen(str);
-	return str[l-5] == 'k'; // check for the 'k' in 'blank.{png,jpg}
+	bool res = str[l-5] == 'k'; // check for the 'k' in 'blank.{png,jpg}'
+
+	if (res)
+		printf("ITS BLANK");
+
+	return res;
 }
 
-struct w {
-	struct work w;
-	char* filenames[5];
-	int x, y;
-};
-
-void go(struct worker_thread *t UNUSED, struct work *wrk) {
+void __attribute__((hot)) go(struct worker_thread *t UNUSED, struct work *wrk) {
 	struct w* payload = (struct w*) wrk;
 
 	int w, h, n;
@@ -95,6 +101,8 @@ void go(struct worker_thread *t UNUSED, struct work *wrk) {
 		stbi_write_png(payload->filenames[4], mw, mh, 3, merged, 0);
 	else
 		stbi_write_jpg(payload->filenames[4], mw, mh, 3, merged, 90);
+
+	xfree(merged);
 
 	for (int i = 0; i < 4; i++)
 		if (!is_blank(payload->filenames[i]))
