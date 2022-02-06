@@ -8,8 +8,8 @@ o=$2 # output file
 
 var=$(basename $i | tr '.' '_')
 
-echo "#pragma once"                          >  $o
-echo "const char $var[] = {"        >> $o
+echo "#pragma once"          >  $o
+echo "const char $var[] = {" >> $o
 
 od $i -An -v -tu1 -w20 | sed -e 's/^ *//' -e 's/ \+/, /g' -e 's/$/,/g'>> $o
 

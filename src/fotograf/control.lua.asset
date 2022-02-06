@@ -33,6 +33,7 @@ script.on_event(defines.events.on_tick, function(event)
 			maxx = maxx, maxy = maxy, minx = minx, miny = miny,
 			pixels_per_tile = pixels_per_tile,
 			image_resolution = image_resolution,
+			image_type = ext,
 		}))
 		game.set_wait_for_screenshots_to_finish()
 	elseif tick == 2 then

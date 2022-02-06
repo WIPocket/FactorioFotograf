@@ -1,5 +1,6 @@
 #include <ucw/lib.h>
 #include <ucw/opt.h>
+#include <ucw/workqueue.h>
 
 #include <stdbool.h>
 #include <time.h>
@@ -18,10 +19,11 @@
 #include "web/script.js.asset.h"
 #include "web/leaflet.permalink.min.js.asset.h"
 
-static int png, min_dist = 128, ppt = 32;
-static char* save_name  = NULL;
-static char* fac_base   = NULL; // defaults to "%s/.factorio", where %s is expanded to env var $HOME
-static char* fac_bin    = "/usr/bin/factorio";
+int png;
+static int min_dist = 128, ppt = 32;
+static char* save_name = NULL; // TODO
+static char* fac_base  = NULL; // defaults to "$HOME/.factorio"
+static char* fac_bin   = "/usr/bin/factorio";
 
 #define EXT (png ? "png" : "jpg")
 
@@ -88,9 +90,9 @@ int main(int argc UNUSED, char* argv[]) {
 		char* script_js_file  = xasprintf("%s/script.js",  ff_dir);
 		char* leaflet_js_file = xasprintf("%s/leaflet.permalink.min.js", ff_dir);
 		mkdir(ff_dir, S_IRWXU);
-		write_file(index_html_file, index_html_asset, sizeof(index_html_asset));
-		write_file(script_js_file,  script_js_asset,  sizeof(script_js_asset));
-		write_file(leaflet_js_file, leaflet_permalink_min_js_asset, sizeof(leaflet_permalink_min_js_asset));
+		write_file(index_html_file, index_html_asset, sizeof(index_html_asset)-1);
+		write_file(script_js_file,  script_js_asset,  sizeof(script_js_asset)-1);
+		write_file(leaflet_js_file, leaflet_permalink_min_js_asset, sizeof(leaflet_permalink_min_js_asset)-1);
 	}
 
 	{ // Run factorio and capture images
@@ -103,10 +105,10 @@ int main(int argc UNUSED, char* argv[]) {
 		modlist(modlist_json, false);
 	}
 
+	int maxx, maxy, minx, miny;
 	{ // Read map_info.json and create map_info.js
 		char* map_info_json = xasprintf("%s/map_info.json", ff_dir);
 		char* map_info_js   = xasprintf("%s/map_info.js"  , ff_dir);
-		int maxx, maxy, minx, miny;
 		mapinfo(map_info_json, &maxx, &maxy, &minx, &miny);
 		printf("%d %d %d %d\n", maxx, maxy, minx, miny);
 
@@ -126,14 +128,24 @@ int main(int argc UNUSED, char* argv[]) {
 		fclose(js);
 	}
 
-	{ // Create blank image
+	{ // Create blank image and zoomout
 		char* blank_file = xasprintf("%s/images/blank.%s", ff_dir, EXT);
 		create_blank(blank_file, ppt*32, false);
-	}
 
-	{ // Zoom
-		// TODO
-	}
+		struct worker_pool pool = {
+			.num_threads = 16,
+			.stack_size = 65536,
+		};
+		worker_pool_init(&pool);
 
+		struct work_queue q;
+		work_queue_init(&pool, &q);
+
+		for (int i = 8; i > 0; i--)
+			zoomout(&q, ff_dir, blank_file, i, maxx, maxy, minx, miny);
+
+		work_queue_cleanup(&q);
+		worker_pool_cleanup(&pool);
+	}
 }
 

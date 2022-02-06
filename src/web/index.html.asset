@@ -10,7 +10,7 @@
 	</head>
 	<body style="margin:0px;height:100%">
 		<div id="map" style="height:100%;background:#222831"></div>
-		<script src="mapInfo.js"></script>
+		<script src="map_info.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>
