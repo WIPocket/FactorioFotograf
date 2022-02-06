@@ -7,6 +7,7 @@
 
 #include "util.h"
 #include "modlist.h"
+#include "factorio.h"
 
 #include "fotograf/control.lua.asset.h"
 #include "fotograf/info.json.asset.h"
@@ -97,7 +98,7 @@ int main(int argc UNUSED, char* argv[]) {
 		// Enable fotograf mod in the modlist json file
 		modlist(modlist_json, true);
 
-		// RUN FACTORIO TODO
+		run_factorio(fac_bin, done_file);
 
 		// Disable fotograf mod in the modlist json file
 		modlist(modlist_json, false);
