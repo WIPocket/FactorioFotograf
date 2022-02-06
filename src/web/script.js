@@ -1,4 +1,5 @@
 ext = ".jpg"
+time = "TIME"
 
 var mapInfo = JSON.parse(mapInfo); // mapInfo comes from mapInfo.js
 var permalink = link.getMapLocation(5, [0, 0]);
@@ -11,7 +12,7 @@ var map = L.map('map', {
 link.setup(map);
 
 L.tileLayer('./images/0/{z}/{x}_{y}' + ext, {
-	attribution: '<a href="https://github.com/ProkopRandacek/FactorioFotograf">FactorioFotograf</a>',
+	attribution: `${time} | <a href="https://github.com/ProkopRandacek/FactorioFotograf">FactorioFotograf</a>`,
 	maxZoom: 8,
 	minZoom: 0,
 	zoomOffset: 0,

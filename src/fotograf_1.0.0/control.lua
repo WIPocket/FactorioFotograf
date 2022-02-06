@@ -8,6 +8,7 @@ maxx, maxy, minx, miny = -9999999999, -9999999999, 9999999999, 9999999999
 tick = 0
 script.on_event(defines.events.on_tick, function(event)
 	if tick == 0 then
+		game.surfaces[1].daytime = 0
 		game.print("Taking screenshots...")
 	elseif tick == 1 then
 		for c in game.surfaces[1].get_chunks() do

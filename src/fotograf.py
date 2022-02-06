@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os, time, argparse, shutil, json, subprocess
 from datetime import date
+import datetime
 from sys import platform
 
 from log import msg, die
@@ -128,6 +129,7 @@ with open(f"{args.output}/mapInfo.js", "w") as file:
 with open(f"{args.output}/script.js", "r+") as file: # the script.js again need a PNG/JPEG flag set
     lines = file.readlines()
     lines[0] = "ext = \"" + (".png" if args.png else ".jpg") + "\"\n"
+    lines[1] = "time = \"" + (datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")) + "\"\n"
     file.seek(0)
     file.writelines(lines)
     file.truncate()
