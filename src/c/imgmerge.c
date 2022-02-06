@@ -4,6 +4,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "settings.h"
+
 #ifdef JPG
 #define STBI_ONLY_JPEG
 #endif
@@ -20,7 +22,13 @@
 
 bool is_blank(char* str) {
 	int len = strlen(str);
-	char* suffix = "k.png"; // if the file ends with k.png we already know it has to be blank.png
+	// if the file ends with k.{ext} we already know it has to be blank
+	#ifdef JPG
+	char* suffix = "k.jpg";
+	#endif
+	#ifdef PNG
+	char* suffix = "k.png";
+	#endif
 	int suffix_len = strlen(suffix);
 	for (int i = 0; i < suffix_len; i++)
 		if (str[len - (suffix_len - i)] != suffix[i])
