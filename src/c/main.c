@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 	maxy /= 2;
 
 	char *blank = calloc(1, PATH_LEN * sizeof(char*));
-	sprintf(blank, "./%s/images/blank.png", path);
+	sprintf(blank, "./%s/images/blank." EXT, path);
 
 	for (int x = minx; x < maxx; x++) {
 		for (int y = miny; y < maxy; y++) {

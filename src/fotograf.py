@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, argparse, shutil, json, subprocess
+import os, time, argparse, shutil, json, subprocess
 from datetime import date
 from sys import platform
 
@@ -117,7 +117,10 @@ with open(f"{args.fac_base}/script-output/mapInfo.json") as file:
     map_info_text = file.read() # we read map info because we need the map bounds ({max,min}{x,y}) for the zooming program
 map_info = json.loads(map_info_text) 
 image_resolution = map_info["image_resolution"] # creating the blank tile image
-Image.new(mode="RGBA", size=(image_resolution, image_resolution), color=(0, 0, 0, 0)).save(f"{args.output}/images/blank.png")
+if args.png:
+  Image.new(mode="RGBA", size=(image_resolution, image_resolution), color=(0, 0, 0, 0)).save(f"{args.output}/images/blank.png")
+else:
+  Image.new(mode="RGB", size=(image_resolution, image_resolution), color=(0, 0, 0)).save(f"{args.output}/images/blank.jpg")
 
 msg("Creating web files")
 with open(f"{args.output}/mapInfo.js", "w") as file:
