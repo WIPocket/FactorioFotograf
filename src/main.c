@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <sys/stat.h>
+#include <alloca.h>
 
 #include "util.h"
 #include "modlist.h"
@@ -102,11 +103,27 @@ int main(int argc UNUSED, char* argv[]) {
 		modlist(modlist_json, false);
 	}
 
-	{ // Read map_info.json
+	{ // Read map_info.json and create map_info.js
 		char* map_info_json = xasprintf("%s/map_info.json", ff_dir);
+		char* map_info_js   = xasprintf("%s/map_info.js"  , ff_dir);
 		int maxx, maxy, minx, miny;
 		mapinfo(map_info_json, &maxx, &maxy, &minx, &miny);
 		printf("%d %d %d %d\n", maxx, maxy, minx, miny);
+
+		// copy the json content into a js file with string variable of this content
+		FILE* json = fopen(map_info_json, "r");
+		fseek(json, 0, SEEK_END);
+		size_t length = ftell(json);
+		fseek(json, 0, SEEK_SET);
+
+		char* buffer = alloca(length+1);
+		fread(buffer, length, 1, json);
+		fclose(json);
+		buffer[length] = 0;
+
+		FILE* js   = fopen(map_info_js,   "w");
+		fprintf(js, "map_info_string = '%s'", buffer);
+		fclose(js);
 	}
 
 	{ // Create blank image
