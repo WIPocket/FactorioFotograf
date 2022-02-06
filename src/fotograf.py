@@ -97,6 +97,8 @@ for f in [f"{args.fac_base}/script-output/mapInfo.json", f"{args.fac_base}/scrip
     if os.path.exists(f):
         os.remove(f)
 shutil.copytree(f"{PWD}/web/", args.output) # copy the web template into the output directory
+with open(f"{args.output}/.gitignore", "w") as file:
+    file.write("*")
 
 msg("Starting Factorio")
 factorio_command = [args.fac_bin, "--load-game", args.save] if args.save != None else [args.fac_bin]
