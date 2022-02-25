@@ -7,8 +7,8 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <alloca.h>
+#include <dirent.h>
 
-#include "util.h"
 #include "modlist.h"
 #include "factorio.h"
 #include "img.h"
@@ -25,6 +25,24 @@ static int min_dist = 128, ppt = 32;
 //static char* save_name = NULL; TODO
 static char* fac_base = NULL; // defaults to "$HOME/.factorio"
 static char* fac_bin  = "/usr/bin/factorio";
+
+bool is_dir(char* path) {
+	DIR* dir = opendir(path);
+	if (dir) {
+		closedir(dir);
+		return true;
+	}
+	return false;
+}
+
+void write_file(char* path, const char* content, size_t lenght) {
+	msg(L_DEBUG, "Writing %zu bytes to '%s'", lenght, path);
+	FILE* f = fopen(path, "w");
+	if (f == 0)
+		die("failed to open file '%s'.", path);
+	fwrite(content, lenght, 1, f);
+	fclose(f);
+}
 
 static struct opt_section options = {
 	OPT_ITEMS {

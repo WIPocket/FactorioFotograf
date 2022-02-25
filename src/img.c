@@ -10,8 +10,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "util.h"
-
 #include "blank.png.asset.h"
 
 #define STBI_ONLY_PNG
