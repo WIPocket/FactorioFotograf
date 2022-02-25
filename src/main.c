@@ -23,7 +23,7 @@ static int min_dist = 128, ppt = 32;
 static char* fac_base = NULL; // defaults to "$HOME/.factorio"
 static char* fac_bin  = "/usr/bin/factorio";
 
-bool is_dir(char* path) {
+static bool is_dir(char* path) {
 	DIR* dir = opendir(path);
 	if (dir) {
 		closedir(dir);
@@ -32,7 +32,7 @@ bool is_dir(char* path) {
 	return false;
 }
 
-void write_file(char* path, const char* content, size_t lenght) {
+static void write_file(char* path, const char* content, size_t lenght) {
 	msg(L_DEBUG, "Writing %zu bytes to '%s'", lenght, path);
 	FILE* f = fopen(path, "w");
 	if (f == 0)
@@ -59,7 +59,7 @@ static struct opt_section options = {
 	}
 };
 
-void parse_args(char* argv[]) {
+static void parse_args(char* argv[]) {
 	opt_parse(&options, argv+1);
 
 	if (fac_base == NULL)
@@ -137,7 +137,7 @@ int main(int argc UNUSED, char* argv[]) {
 		fclose(json);
 		buffer[length] = 0;
 
-		FILE* js   = fopen(map_info_js,   "w");
+		FILE* js = fopen(map_info_js,   "w");
 		fprintf(js, "map_info_string = '%s'", buffer);
 		fclose(js);
 	}
@@ -155,8 +155,11 @@ int main(int argc UNUSED, char* argv[]) {
 		struct work_queue q;
 		work_queue_init(&pool, &q);
 
-		for (int i = 8; i > 0; i--)
-			zoomout(&q, ff_dir, blank_file, i, maxx, maxy, minx, miny);
+		for (int i = 8; i > 0; i--) {
+			zoomout(&q, ff_dir, blank_file, i, &maxx, &maxy, &minx, &miny);
+			printf("%d %d %d %d\n", maxx, maxy, minx, miny);
+			msg(L_INFO, "Finished zoom level (%d/8)", 9-i);
+		}
 
 		work_queue_cleanup(&q);
 		worker_pool_cleanup(&pool);
