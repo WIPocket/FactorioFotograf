@@ -35,7 +35,7 @@ static struct opt_section options = {
 		OPT_HELP_OPTION,
 
 		OPT_BOOL  ('p', "png"      , png       , 0                 , "\tUse PNGs instead of JPGs"),
-		OPT_STRING('s', "save-name", save_name , OPT_REQUIRED_VALUE, "\tSpecify save name"),
+		//OPT_STRING('s', "save-name", save_name , OPT_REQUIRED_VALUE, "\tSpecify save name"), TODO
 		OPT_STRING('b', "fac-base" , fac_base  , OPT_REQUIRED_VALUE, "\tOverride .factorio directory path"),
 		OPT_STRING('e', "fac-bin"  , fac_bin   , OPT_REQUIRED_VALUE, "\tOverride factorio executable location"),
 		OPT_INT   ('d', "min-dist" , min_dist  , OPT_REQUIRED_VALUE, "\tMinimum distance from chunk center to any structure to include this chunk in the map"),

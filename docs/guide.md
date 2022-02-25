@@ -11,11 +11,12 @@ If you find something unclear, feel free to message me on discord (`Proicop#3264
   - Note: run `./ff --help` for all available arguments
 - Factorio will open
 - Manually open the save you want to make a map from
-- FactorioFotograf will start capturing screenshots
-- After capturing, FactorioFotograf will start generating lower zoom levels
+- FactorioFotograf will start capturing screenshots when the save loads (The game will be frozen)
+- When capturing is done, Factorio will be closed and FF will start zooming out the images
 - The final web is in `.factorio/script-output/FF`
 
 # Steam version of Factorio
+
 If you wish to use the steam version of Factorio, you can specify the path of the steam Factorio executable.
 For example, if your steam is installed into the default folder, the call would look like this:
 ```sh

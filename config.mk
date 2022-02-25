@@ -1,7 +1,7 @@
 TARGET  = ff
 WARNS   = -Wall -Wextra
 CFLAGS  = -O3
-LDFLAGS = 
+LDFLAGS =
 
 # source directory
 S = src
