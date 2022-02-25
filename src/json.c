@@ -4,28 +4,26 @@
 
 #include <fcntl.h>
 
-#define BUFFER_SIZE (1 << 13)
-
 static struct json_context* js;
 static struct json_node* root_node;
 
-void modlist_read(const char* filepath) {
-	msg(L_DEBUG, "Reading modlist at '%s'", filepath);
-	struct fastbuf* fb = bopen(filepath, O_RDONLY, BUFFER_SIZE);
+static void jsonread(const char* filepath) {
+	msg(L_DEBUG, "Reading json '%s'", filepath);
+	struct fastbuf* fb = bopen(filepath, O_RDONLY, 256);
 	js = json_new();
 	root_node = json_parse(js, fb);
 	bclose(fb);
 }
 
-void modlist_write(const char* filepath) {
-	msg(L_DEBUG, "Writting modlist");
-	struct fastbuf* fb = bopen(filepath, O_WRONLY | O_CREAT | O_TRUNC, BUFFER_SIZE);
+static void jsonwrite(const char* filepath) {
+	msg(L_DEBUG, "Writting json '%s'", filepath);
+	struct fastbuf* fb = bopen(filepath, O_WRONLY | O_CREAT | O_TRUNC, 256);
 	json_write(js, fb, root_node);
 	bclose(fb);
 	json_delete(js);
 }
 
-void modlist_set(bool new_value) {
+static void modlist_set(bool new_value) {
 	msg(L_DEBUG, "%sabling fotograf in the modlist.", new_value ? "En" : "Dis");
 	struct json_node* entry_array = json_object_get(root_node, "mods");
 
@@ -52,8 +50,19 @@ void modlist_set(bool new_value) {
 }
 
 void modlist(const char* path, bool val) {
-	modlist_read(path);
+	jsonread(path);
 	modlist_set(val);
-	modlist_write(path);
+	jsonwrite(path);
+}
+
+void mapinfo(char* path, int* maxx, int* maxy, int* minx, int* miny) {
+	jsonread(path);
+
+	*maxx = json_object_get(root_node, "maxx")->number;
+	*maxy = json_object_get(root_node, "maxy")->number;
+	*minx = json_object_get(root_node, "minx")->number;
+	*miny = json_object_get(root_node, "miny")->number;
+
+	json_delete(js);
 }
 

@@ -6,10 +6,9 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
-#include "modlist.h"
 #include "factorio.h"
 #include "img.h"
-#include "mapinfo.h"
+#include "json.h"
 
 #include "fotograf/control.lua.asset.h"
 #include "fotograf/info.json.asset.h"
