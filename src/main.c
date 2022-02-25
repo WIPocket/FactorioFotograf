@@ -17,11 +17,9 @@
 #include "web/script.js.asset.h"
 #include "web/leaflet.permalink.min.js.asset.h"
 
-int png;
-static int min_dist = 128, ppt = 32;
-//static char* save_name = NULL; TODO
-static char* fac_base = NULL; // defaults to "$HOME/.factorio"
-static char* fac_bin  = "/usr/bin/factorio";
+int png, alt_mode, jobs = 4, jpg_quality = 90, dist = 128, ppt = 32;
+double daytime = 1.0;
+static char *fac_base, *save_name, *fac_bin = "/usr/bin/factorio";
 
 static bool is_dir(char* path) {
 	DIR* dir = opendir(path);
@@ -47,14 +45,16 @@ static struct opt_section options = {
 		OPT_HELP(""),
 		OPT_HELP("Options:"),
 		OPT_HELP_OPTION,
-
-		OPT_BOOL  ('p', "png"      , png       , 0                 , "\tUse PNGs instead of JPGs"),
-		//OPT_STRING('s', "save-name", save_name , OPT_REQUIRED_VALUE, "\tSpecify save name"), TODO
-		OPT_STRING('b', "fac-base" , fac_base  , OPT_REQUIRED_VALUE, "\tOverride .factorio directory path"),
-		OPT_STRING('e', "fac-bin"  , fac_bin   , OPT_REQUIRED_VALUE, "\tOverride factorio executable location"),
-		OPT_INT   ('d', "min-dist" , min_dist  , OPT_REQUIRED_VALUE, "\tMinimum distance from chunk center to any structure to include this chunk in the map"),
-		OPT_INT   (0  , "ppt"      , ppt       , OPT_REQUIRED_VALUE, "\tPixels per factorio-tile"),
-
+		OPT_BOOL  ('p', "png"        , png        , 0                 , "\tUse PNGs instead of JPGs (default false)"),
+		OPT_STRING('s', "save-name"  , save_name  , OPT_REQUIRED_VALUE, "\tSpecify save name"),
+		OPT_STRING('b', "fac-base"   , fac_base   , OPT_REQUIRED_VALUE, "\tOverride .factorio directory path (default $HOME/.factorio)"),
+		OPT_STRING('e', "fac-bin"    , fac_bin    , OPT_REQUIRED_VALUE, "\tOverride Factorio executable location (default /usr/bin/factorio)"),
+		OPT_DOUBLE('t', "daytime"    , daytime    , OPT_REQUIRED_VALUE, "\tFactorio daytime (default 1.0)"),
+		OPT_BOOL  ('a', "alt-mode"   , alt_mode   , 0                 , "\tEnable alt-mode for screenshots (default false)"),
+		OPT_INT   ('j', "jobs"       , jobs       , OPT_REQUIRED_VALUE, "\tThe number of threads to create (default 4)"),
+		OPT_INT   ('q', "jpg-quality", jpg_quality, OPT_REQUIRED_VALUE, "\tJpg quality to use when creating jpgs (0-100) (default 90)"),
+		OPT_INT   ('d', "dist"       , dist       , OPT_REQUIRED_VALUE, "\tMaximum distance from chunk to player structure (default 128)"),
+		OPT_INT   (0  , "ppt"        , ppt        , OPT_REQUIRED_VALUE, "\tPixels per Factorio-tile (default 32)"),
 		OPT_END
 	}
 };
@@ -65,13 +65,8 @@ static void parse_args(char* argv[]) {
 	if (fac_base == NULL)
 		asprintf(&fac_base, "%s/.factorio", getenv("HOME"));
 
-	msg(L_DEBUG, "argparse: png      : %d", png       );
-	//msg(L_DEBUG, "argparse: save_name: %s", save_name ); TODO
-	msg(L_DEBUG, "argparse: fac_base : %s", fac_base  );
-	msg(L_DEBUG, "argparse: fac_bin  : %s", fac_bin   );
-
-	//if (save_name == NULL)
-	//	msg(L_INFO, "No save name provided. You will have to load the save manually.");
+	if (save_name == NULL)
+		msg(L_INFO, "No save name provided. You will have to load the save manually.");
 }
 
 int main(int argc UNUSED, char* argv[]) {
@@ -95,7 +90,7 @@ int main(int argc UNUSED, char* argv[]) {
 		write_file(info_json_file, info_json_asset, sizeof(info_json_asset));
 
 		FILE* fd = fopen(control_lua_file, "w");
-		fprintf(fd, control_lua_asset, (png ? "png" : "jpg"), ppt, min_dist);
+		fprintf(fd, control_lua_asset, (png ? "png" : "jpg"), ppt, dist, jpg_quality, daytime, (alt_mode ? "true" : "false"));
 		fclose(fd);
 	}
 
@@ -113,7 +108,7 @@ int main(int argc UNUSED, char* argv[]) {
 		// Enable fotograf mod in the modlist json file
 		modlist(modlist_json, true);
 
-		run_factorio(fac_bin, done_file);
+		run_factorio(fac_bin, done_file, save_name);
 
 		// Disable fotograf mod in the modlist json file
 		modlist(modlist_json, false);
@@ -137,7 +132,7 @@ int main(int argc UNUSED, char* argv[]) {
 		fclose(json);
 		buffer[length] = 0;
 
-		FILE* js = fopen(map_info_js,   "w");
+		FILE* js = fopen(map_info_js, "w");
 		fprintf(js, "map_info_string = '%s'", buffer);
 		fclose(js);
 	}
@@ -147,7 +142,7 @@ int main(int argc UNUSED, char* argv[]) {
 		create_blank(blank_file, ppt*32, false);
 
 		struct worker_pool pool = {
-			.num_threads = 16,
+			.num_threads = jobs,
 			.stack_size = 65536,
 		};
 		worker_pool_init(&pool);
@@ -157,7 +152,6 @@ int main(int argc UNUSED, char* argv[]) {
 
 		for (int i = 8; i > 0; i--) {
 			zoomout(&q, ff_dir, blank_file, i, &maxx, &maxy, &minx, &miny);
-			printf("%d %d %d %d\n", maxx, maxy, minx, miny);
 			msg(L_INFO, "Finished zoom level (%d/8)", 9-i);
 		}
 

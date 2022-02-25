@@ -140,7 +140,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int* maxx,
 			struct w* w = construct_job(path, blank, from, bx, by, x, y, ext);
 			if (w) {
 				work_submit(q, &w->w);
-				//msg(L_INFO, "Submitted job %d", ++submitted);
+				msg(L_INFO, "Submitted job %d", ++submitted);
 			}
 		}
 	}
@@ -148,7 +148,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int* maxx,
 	struct w *w;
 	int finished = 0;
 	while ((w = (struct w*) work_wait(q))) {
-		//msg(L_INFO, "Finished job (%d/%d)", ++finished, submitted);
+		msg(L_INFO, "Finished job (%d/%d)", ++finished, submitted);
 		free(w);
 	}
 }

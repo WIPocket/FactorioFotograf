@@ -6,14 +6,19 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
-void run_factorio(char* fac_bin, char* done_file) {
+void run_factorio(char* fac_bin, char* done_file, char* save_name) {
 	msg(L_DEBUG, "Starting Factorio (%s).", fac_bin);
 
 	pid_t fk = fork();
 	if (fk == 0) { // child process
 		int dev_null = open("/dev/null", O_WRONLY);
 		dup2(dev_null, 1); // redirect factorio output to /dev/null
-		execl(fac_bin, "", NULL);
+
+		if (save_name == NULL)
+			execl(fac_bin, "", NULL);
+		else
+			execl(fac_bin, "", "--load-game", save_name, NULL);
+
 		ASSERT(false); // we should never get here
 	} else if (fk > 0) { // parent process
 		while (1) {
