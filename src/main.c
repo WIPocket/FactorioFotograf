@@ -3,10 +3,7 @@
 #include <ucw/workqueue.h>
 #include <ucw/stkstring.h>
 
-#include <stdbool.h>
-#include <time.h>
 #include <sys/stat.h>
-#include <alloca.h>
 #include <dirent.h>
 
 #include "modlist.h"

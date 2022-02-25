@@ -2,11 +2,7 @@
 #include <ucw/gary.h>
 #include <ucw-json/json.h>
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <fcntl.h>
-#include <string.h>
-#include <unistd.h>
 
 #define BUFFER_SIZE (1 << 13)
 
