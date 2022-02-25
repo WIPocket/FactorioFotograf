@@ -23,10 +23,8 @@
 int png;
 static int min_dist = 128, ppt = 32;
 //static char* save_name = NULL; TODO
-static char* fac_base  = NULL; // defaults to "$HOME/.factorio"
-static char* fac_bin   = "/usr/bin/factorio";
-
-#define EXT (png ? "png" : "jpg")
+static char* fac_base = NULL; // defaults to "$HOME/.factorio"
+static char* fac_bin  = "/usr/bin/factorio";
 
 static struct opt_section options = {
 	OPT_ITEMS {
@@ -82,7 +80,7 @@ int main(int argc UNUSED, char* argv[]) {
 		write_file(info_json_file, info_json_asset, sizeof(info_json_asset));
 
 		FILE* fd = fopen(control_lua_file, "w");
-		fprintf(fd, control_lua_asset, EXT, ppt, min_dist);
+		fprintf(fd, control_lua_asset, (png ? "png" : "jpg"), ppt, min_dist);
 		fclose(fd);
 	}
 
@@ -130,7 +128,7 @@ int main(int argc UNUSED, char* argv[]) {
 	}
 
 	{ // Create blank image and zoomout
-		char* blank_file = stk_printf("%s/images/blank.%s", ff_dir, EXT);
+		char* blank_file = stk_printf("%s/images/blank.%s", ff_dir, (png ? "png" : "jpg"));
 		create_blank(blank_file, ppt*32, false);
 
 		struct worker_pool pool = {

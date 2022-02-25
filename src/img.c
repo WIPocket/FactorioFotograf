@@ -149,7 +149,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int maxx, 
 				continue; // don't merge 4 blanks
 			}
 
-			struct w *w = xmalloc_zero(sizeof(*w));
+			struct w *w = xmalloc_zero(sizeof(struct w));
 			w->w.go = go;
 			w->w.priority = 0;
 			w->x = x;
@@ -161,7 +161,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int maxx, 
 			w->filenames[4] = o;
 
 			work_submit(q, &w->w);
-			msg(L_INFO, "Submitted request %d %d", w->x, w->y);
+			msg(L_INFO, "Submitted job %d %d", w->x, w->y);
 			submitted++;
 		}
 	}
@@ -169,8 +169,9 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int maxx, 
 	struct w *w;
 	int finished = 0;
 	while ((w = (struct w*) work_wait(q))) {
-		msg(L_INFO, "Finished request %d %d (%d/%d)", w->x, w->y, finished, submitted);
+		msg(L_INFO, "Finished job %d %d (%d/%d)", w->x, w->y, finished, submitted);
 		finished++;
+		free(w);
 	}
 }
 
