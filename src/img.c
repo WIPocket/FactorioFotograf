@@ -2,6 +2,7 @@
 
 #include <ucw/lib.h>
 #include <ucw/workqueue.h>
+#include <ucw/stkstring.h>
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -121,7 +122,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int maxx, 
 	char* ext = png ? "png" : "jpg";
 	int submitted = 0;
 
-	char* out_dir = xasprintf("%s/images/0/%d", path, from-1);
+	char* out_dir = stk_printf("%s/images/0/%d", path, from-1);
 	mkdir(out_dir, 0700);
 
 	for (int x = minx; x < maxx; x++) {
@@ -170,7 +171,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int maxx, 
 
 	struct w *w;
 	int finished = 0;
-	while (w = (struct w*) work_wait(q)) {
+	while ((w = (struct w*) work_wait(q))) {
 		msg(L_INFO, "Finished request %d %d (%d/%d)", w->x, w->y, finished, submitted);
 		finished++;
 	}

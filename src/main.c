@@ -1,6 +1,7 @@
 #include <ucw/lib.h>
 #include <ucw/opt.h>
 #include <ucw/workqueue.h>
+#include <ucw/stkstring.h>
 
 #include <stdbool.h>
 #include <time.h>
@@ -21,7 +22,7 @@
 
 int png;
 static int min_dist = 128, ppt = 32;
-static char* save_name = NULL; // TODO
+//static char* save_name = NULL; TODO
 static char* fac_base  = NULL; // defaults to "$HOME/.factorio"
 static char* fac_bin   = "/usr/bin/factorio";
 
@@ -49,15 +50,15 @@ void parse_args(char* argv[]) {
 	opt_parse(&options, argv+1);
 
 	if (fac_base == NULL)
-		fac_base = xasprintf("%s/.factorio", getenv("HOME"));
+		asprintf(&fac_base, "%s/.factorio", getenv("HOME"));
 
 	msg(L_DEBUG, "argparse: png      : %d", png       );
-	msg(L_DEBUG, "argparse: save_name: %s", save_name );
+	//msg(L_DEBUG, "argparse: save_name: %s", save_name ); TODO
 	msg(L_DEBUG, "argparse: fac_base : %s", fac_base  );
 	msg(L_DEBUG, "argparse: fac_bin  : %s", fac_bin   );
 
-	if (save_name == NULL)
-		msg(L_INFO, "No save name provided. You will have to load the save manually.");
+	//if (save_name == NULL)
+	//	msg(L_INFO, "No save name provided. You will have to load the save manually.");
 }
 
 int main(int argc UNUSED, char* argv[]) {
@@ -65,18 +66,18 @@ int main(int argc UNUSED, char* argv[]) {
 
 	parse_args(argv);
 
-	char* modlist_json = xasprintf("%s/mods/mod-list.json", fac_base);
-	char* ff_dir       = xasprintf("%s/script-output/FF",   fac_base);
+	char* modlist_json = stk_printf("%s/mods/mod-list.json", fac_base);
+	char* ff_dir       = stk_printf("%s/script-output/FF",   fac_base);
 
-	char* done_file = xasprintf("%s/done", ff_dir);
+	char* done_file = stk_printf("%s/done", ff_dir);
 
 	if (is_dir(ff_dir))
 		die("The directory '%s' already exists.", ff_dir);
 
 	{ // Paste fotograf into the mod directory
-		char* fotograf_mod_dir = xasprintf("%s/mods/fotograf_1.0.0", fac_base);
-		char* control_lua_file = xasprintf("%s/control.lua", fotograf_mod_dir);
-		char* info_json_file   = xasprintf("%s/info.json"  , fotograf_mod_dir);
+		char* fotograf_mod_dir = stk_printf("%s/mods/fotograf_1.0.0", fac_base);
+		char* control_lua_file = stk_printf("%s/control.lua", fotograf_mod_dir);
+		char* info_json_file   = stk_printf("%s/info.json"  , fotograf_mod_dir);
 		mkdir(fotograf_mod_dir, S_IRWXU);
 		write_file(info_json_file, info_json_asset, sizeof(info_json_asset));
 
@@ -86,9 +87,9 @@ int main(int argc UNUSED, char* argv[]) {
 	}
 
 	{ // Paste web files
-		char* index_html_file = xasprintf("%s/index.html", ff_dir);
-		char* script_js_file  = xasprintf("%s/script.js",  ff_dir);
-		char* leaflet_js_file = xasprintf("%s/leaflet.permalink.min.js", ff_dir);
+		char* index_html_file = stk_printf("%s/index.html", ff_dir);
+		char* script_js_file  = stk_printf("%s/script.js",  ff_dir);
+		char* leaflet_js_file = stk_printf("%s/leaflet.permalink.min.js", ff_dir);
 		mkdir(ff_dir, S_IRWXU);
 		write_file(index_html_file, index_html_asset, sizeof(index_html_asset)-1);
 		write_file(script_js_file,  script_js_asset,  sizeof(script_js_asset)-1);
@@ -107,8 +108,8 @@ int main(int argc UNUSED, char* argv[]) {
 
 	int maxx, maxy, minx, miny;
 	{ // Read map_info.json and create map_info.js
-		char* map_info_json = xasprintf("%s/map_info.json", ff_dir);
-		char* map_info_js   = xasprintf("%s/map_info.js"  , ff_dir);
+		char* map_info_json = stk_printf("%s/map_info.json", ff_dir);
+		char* map_info_js   = stk_printf("%s/map_info.js"  , ff_dir);
 		mapinfo(map_info_json, &maxx, &maxy, &minx, &miny);
 		printf("%d %d %d %d\n", maxx, maxy, minx, miny);
 
@@ -129,7 +130,7 @@ int main(int argc UNUSED, char* argv[]) {
 	}
 
 	{ // Create blank image and zoomout
-		char* blank_file = xasprintf("%s/images/blank.%s", ff_dir, EXT);
+		char* blank_file = stk_printf("%s/images/blank.%s", ff_dir, EXT);
 		create_blank(blank_file, ppt*32, false);
 
 		struct worker_pool pool = {
