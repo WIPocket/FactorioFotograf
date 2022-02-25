@@ -1,6 +1,6 @@
 # Factorio Fotograf
 
-[![demo image](./demo.png)](https://rdck.dev/m/f/protab/)
+[![demo image](./demo.png)](https://rdck.dev/m/f/protab/#-3.78125,-8.30469,6z)
 
 Minimalistic Factorio map generator for Linux.
 
@@ -22,8 +22,6 @@ Minimalistic Factorio map generator for Linux.
 
 ## Deps
 Non-headless Factorio
-
-(Arch: `yay -S factorio --needed`)  
 
 ## Features
 - [x] Web

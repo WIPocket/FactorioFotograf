@@ -2,7 +2,6 @@
 ext = "%s" -- the %%-escape codes are replaced by fprintf in C
 pixels_per_tile = %d
 max_dist_to_smt = %d
-
 image_resolution = 32 * pixels_per_tile -- image always contains 32 tiles
 zoom = pixels_per_tile / 32 -- not sure if this number is different on different graphics settings
 maxx, maxy, minx, miny = -9999999999, -9999999999, 9999999999, 9999999999
@@ -30,12 +29,12 @@ script.on_event(defines.events.on_tick, function(event)
 				}
 			end
 		end
-		game.write_file("FF/map_info.json", game.table_to_json({
+		game.write_file("FF/map_info.json", game.table_to_json{
 			maxx = maxx, maxy = maxy, minx = minx, miny = miny,
 			pixels_per_tile = pixels_per_tile,
 			image_resolution = image_resolution,
 			image_type = ext,
-		}))
+		})
 		game.set_wait_for_screenshots_to_finish()
 	elseif tick == 2 then
 		game.print("done")

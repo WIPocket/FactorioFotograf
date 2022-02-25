@@ -3,15 +3,12 @@
 # Generates a header file containing byte array of the contents of the input file
 # ./biem test.txt text.txt.h
 
-i=$1 # input file
-o=$2 # output file
+var=$(basename $1 | tr '.' '_')
 
-var=$(basename $i | tr '.' '_')
+echo "#pragma once"          >  $2
+echo "const char $var[] = {" >> $2
 
-echo "#pragma once"          >  $o
-echo "const char $var[] = {" >> $o
+od $1 -An -v -tu1 -w20 | sed -e 's/^ *//' -e 's/ \+/, /g' -e 's/$/,/g' >> $2
 
-od $i -An -v -tu1 -w20 | sed -e 's/^ *//' -e 's/ \+/, /g' -e 's/$/,/g'>> $o
-
-echo -e "0};\n" >> $o
+echo -e "0};\n" >> $2
 
