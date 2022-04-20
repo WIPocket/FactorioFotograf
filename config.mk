@@ -1,6 +1,6 @@
 TARGET  = ff
-WARNS   = -Wall -Wextra
-CFLAGS  = -O3
+WARNS   = -Wall -Wextra -Wno-pointer-sign
+CFLAGS  = -O3 -flto
 LDFLAGS =
 
 # source directory

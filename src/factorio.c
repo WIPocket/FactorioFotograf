@@ -2,9 +2,10 @@
 
 #include <ucw/lib.h>
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <sys/wait.h>
-#include <fcntl.h>
+#include <unistd.h>
 
 void run_factorio(char* fac_bin, char* done_file, char* save_name) {
 	msg(L_DEBUG, "Starting Factorio (%s).", fac_bin);

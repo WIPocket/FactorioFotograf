@@ -5,10 +5,10 @@
 
 var=$(basename $1 | tr '.' '_')
 
-echo "#pragma once"          >  $2
+echo "#pragma once" >  $2
 echo "const char $var[] = {" >> $2
 
 od $1 -An -v -tu1 -w20 | sed -e 's/^ *//' -e 's/ \+/, /g' -e 's/$/,/g' >> $2
 
-echo -e "0};\n" >> $2
+echo "0};" >> $2
 

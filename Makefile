@@ -7,7 +7,7 @@ WARNS  ?= -Wall -Wextra -Wno-unused-parameter
 
 INCLUDE = -Ideps/stb/include
 
-CFLAGS  += -std=gnu17 $(WARNS) -finline-limit=5000
+CFLAGS  += -std=gnu17 $(WARNS)
 LDFLAGS += -lm -lpthread
 
 all: $(TARGET)
@@ -19,9 +19,6 @@ clean::
 	$(RM) -- $(TARGET)
 
 deepclean:: clean
-
-help:
-	@cat readme.md
 
 include Makedeps
 include Makerules
