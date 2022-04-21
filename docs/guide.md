@@ -7,7 +7,7 @@ If you find something unclear, feel free to message me on discord (`Proicop#3264
 - Manually open Factorio
 - Make sure that all mods that are in the target save are enabled
 - Close the game
-- Run the `ff` binary that you downloaded
+- Run the `ff -j$(nproc)` binary that you downloaded
   - Note: run `./ff --help` for all available arguments
 - Factorio will open
 - Manually open the save you want to make a map from

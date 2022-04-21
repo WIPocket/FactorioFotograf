@@ -3,7 +3,7 @@
 include config.mk
 
 TARGET ?= ff
-WARNS  ?= -Wall -Wextra -Wno-unused-parameter
+WARNS  ?= -Wall -Wextra
 
 INCLUDE = -Ideps/stb/include
 
