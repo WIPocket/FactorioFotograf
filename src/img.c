@@ -130,7 +130,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int* maxx,
 	int submitted = 0;
 
 	char* out_dir = stk_printf("%s/images/0/%d", path, from-1);
-	mkdir(out_dir, 0700);
+	mkdir(out_dir, S_IRWXU);
 
 	for (int x = *minx; x < *maxx; x++) {
 		for (int y = *miny; y < *maxy; y++) {
