@@ -79,7 +79,7 @@ int main(int argc UNUSED, char* argv[]) {
 	char* done_file    = stk_printf("%s/done", ff_dir);
 
 	if (!is_dir(script_dir))
-		mkdir(script_dir, S_IRWXU);
+		mkdir(script_dir, 0755);
 	else if (is_dir(ff_dir))
 		die("The directory '%s' already exists.", ff_dir);
 
@@ -87,7 +87,7 @@ int main(int argc UNUSED, char* argv[]) {
 		char* fotograf_mod_dir = stk_printf("%s/mods/fotograf_1.0.0", fac_base);
 		char* control_lua_file = stk_printf("%s/control.lua", fotograf_mod_dir);
 		char* info_json_file   = stk_printf("%s/info.json"  , fotograf_mod_dir);
-		mkdir(fotograf_mod_dir, S_IRWXU);
+		mkdir(fotograf_mod_dir, 0755);
 		write_file(info_json_file, info_json_asset, sizeof(info_json_asset));
 
 		FILE* fd = fopen(control_lua_file, "w");
@@ -99,7 +99,7 @@ int main(int argc UNUSED, char* argv[]) {
 		char* index_html_file = stk_printf("%s/index.html", ff_dir);
 		char* script_js_file  = stk_printf("%s/script.js",  ff_dir);
 		char* leaflet_js_file = stk_printf("%s/leaflet.permalink.min.js", ff_dir);
-		mkdir(ff_dir, S_IRWXU);
+		mkdir(ff_dir, 0755);
 		write_file(index_html_file, index_html_asset, sizeof(index_html_asset)-1);
 		write_file(script_js_file,  script_js_asset,  sizeof(script_js_asset)-1);
 		write_file(leaflet_js_file, leaflet_permalink_min_js_asset, sizeof(leaflet_permalink_min_js_asset)-1);
