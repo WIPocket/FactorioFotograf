@@ -75,10 +75,12 @@ int main(int argc UNUSED, char* argv[]) {
 
 	char* modlist_json = stk_printf("%s/mods/mod-list.json", fac_base);
 	char* ff_dir       = stk_printf("%s/script-output/FF",   fac_base);
+	char* script_dir   = stk_printf("%s/script-output",      fac_base);
+	char* done_file    = stk_printf("%s/done", ff_dir);
 
-	char* done_file = stk_printf("%s/done", ff_dir);
-
-	if (is_dir(ff_dir))
+	if (!is_dir(script_dir))
+		mkdir(script_dir, S_IRWXU);
+	else if (is_dir(ff_dir))
 		die("The directory '%s' already exists.", ff_dir);
 
 	{ // Paste fotograf into the mod directory
