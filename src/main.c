@@ -70,9 +70,9 @@ static void parse_args(char* argv[]) {
 }
 
 int main(int argc UNUSED, char* argv[]) {
-	log("Hello.");
-
 	parse_args(argv);
+
+	log("Hello.");
 
 	char* modlist_json = stk_printf("%s/mods/mod-list.json", fac_base);
 	char* ff_dir       = stk_printf("%s/script-output/FF",   fac_base);
@@ -121,7 +121,6 @@ int main(int argc UNUSED, char* argv[]) {
 		char* map_info_json = stk_printf("%s/map_info.json", ff_dir);
 		char* map_info_js   = stk_printf("%s/map_info.js"  , ff_dir);
 		mapinfo(map_info_json, &maxx, &maxy, &minx, &miny);
-		printf("%d %d %d %d\n", maxx, maxy, minx, miny);
 
 		// copy the json content into a js file with string variable of this content
 		FILE* json = fopen(map_info_json, "r");
