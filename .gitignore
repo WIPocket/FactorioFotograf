@@ -4,5 +4,6 @@ obj
 *.asset.h
 
 compile_commands.json
-.cache
+.cache/
+.ccls-cache/
 

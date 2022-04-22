@@ -4,11 +4,13 @@
 
 #include <fcntl.h>
 
+#include "log.h"
+
 static struct json_context* js;
 static struct json_node* root_node;
 
 static void jsonread(const char* filepath) {
-	msg(L_DEBUG, "Reading json '%s'", filepath);
+	log("Reading json '%s'", filepath);
 	struct fastbuf* fb = bopen(filepath, O_RDONLY, 256);
 	js = json_new();
 	root_node = json_parse(js, fb);
@@ -16,7 +18,7 @@ static void jsonread(const char* filepath) {
 }
 
 static void jsonwrite(const char* filepath) {
-	msg(L_DEBUG, "Writting json '%s'", filepath);
+	log("Writting json '%s'", filepath);
 	struct fastbuf* fb = bopen(filepath, O_WRONLY | O_CREAT | O_TRUNC, 256);
 	json_write(js, fb, root_node);
 	bclose(fb);
@@ -24,7 +26,7 @@ static void jsonwrite(const char* filepath) {
 }
 
 static void modlist_set(bool new_value) {
-	msg(L_DEBUG, "%sabling fotograf in the modlist.", new_value ? "En" : "Dis");
+	log("%sabling fotograf in the modlist.", new_value ? "En" : "Dis");
 	struct json_node* entry_array = json_object_get(root_node, "mods");
 
 	// Iterating over all entries in the file
@@ -35,12 +37,12 @@ static void modlist_set(bool new_value) {
 		if (strcmp(entry_name, "fotograf") == 0) {
 			struct json_node* new_json_node = json_new_bool(js, new_value);
 			json_object_set(entry, "enabled", new_json_node);
-			msg(L_DEBUG, "Found existing fotograf entry");
+			log("Found existing fotograf entry");
 			return;
 		}
 	}
 
-	msg(L_DEBUG, "fotograf entry in modlist not found, creating new one");
+	log("fotograf entry in modlist not found, creating new one");
 
 	struct json_node* new_entry = json_new_object(js);
 	json_object_set(new_entry, "name", json_new_string(js, "fotograf"));
