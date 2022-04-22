@@ -25,13 +25,13 @@ void run_factorio(char* fac_bin, char* done_file, char* save_name) {
 		ASSERT(false); // we should never get here
 	} else if (fk > 0) { // parent process
 		while (1) {
-			log("Checking the done file (%s)", done_file);
+			log("Checking the done file (%s).", done_file);
 
 			sleep(1);
 			FILE* done_fd = fopen(done_file, "r");
 
 			if (done_fd != NULL) {
-				log("Done file found. Breaking the loop");
+				log("Done file found. Breaking the loop.");
 				fclose(done_fd);
 				remove(done_file);
 				kill(fk, SIGTERM);

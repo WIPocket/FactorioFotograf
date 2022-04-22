@@ -31,7 +31,7 @@ static bool is_dir(char* path) {
 }
 
 static void write_file(char* path, const char* content, size_t lenght) {
-	log("Writing %zu bytes to '%s'", lenght, path);
+	log("Writing %zu bytes to '%s'.", lenght, path);
 	FILE* f = fopen(path, "w");
 	if (f == 0)
 		err("failed to open file '%s'.", path);
@@ -154,13 +154,13 @@ int main(int argc UNUSED, char* argv[]) {
 
 		for (int i = 8; i > 0; i--) {
 			zoomout(&q, ff_dir, blank_file, i, &maxx, &maxy, &minx, &miny);
-			log("Finished zoom level (%d/8)", 9-i);
+			log("Finished zoom level (%d/8).", 9-i);
 		}
 
 		work_queue_cleanup(&q);
 		worker_pool_cleanup(&pool);
 	}
 
-	log("Done! Map is in '%s'", ff_dir);
+	log("Done! Map is in '%s'.", ff_dir);
 }
 

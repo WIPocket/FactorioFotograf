@@ -10,7 +10,7 @@ static struct json_context* js;
 static struct json_node* root_node;
 
 static void jsonread(const char* filepath) {
-	log("Reading json '%s'", filepath);
+	log("Reading json '%s'.", filepath);
 	struct fastbuf* fb = bopen(filepath, O_RDONLY, 256);
 	js = json_new();
 	root_node = json_parse(js, fb);
@@ -18,7 +18,7 @@ static void jsonread(const char* filepath) {
 }
 
 static void jsonwrite(const char* filepath) {
-	log("Writting json '%s'", filepath);
+	log("Writting json '%s'.", filepath);
 	struct fastbuf* fb = bopen(filepath, O_WRONLY | O_CREAT | O_TRUNC, 256);
 	json_write(js, fb, root_node);
 	bclose(fb);
@@ -37,12 +37,12 @@ static void modlist_set(bool new_value) {
 		if (strcmp(entry_name, "fotograf") == 0) {
 			struct json_node* new_json_node = json_new_bool(js, new_value);
 			json_object_set(entry, "enabled", new_json_node);
-			log("Found existing fotograf entry");
+			log("Found existing fotograf entry.");
 			return;
 		}
 	}
 
-	log("fotograf entry in modlist not found, creating new one");
+	log("Fotograf entry in modlist not found. Creating new one.");
 
 	struct json_node* new_entry = json_new_object(js);
 	json_object_set(new_entry, "name", json_new_string(js, "fotograf"));

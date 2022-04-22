@@ -29,7 +29,7 @@ struct w {
 };
 
 void create_blank(char* path, int s, bool png) {
-	log("Writting blank %s image %dx%d to '%s'", png ? "png" : "jpg", s, s, path);
+	log("Writting blank %s image %dx%d to '%s'.", png ? "png" : "jpg", s, s, path);
 	int x, y, n;
 	// sizeof-1 because biem automatically appends terminating zero at the end
 	byte* blank = stbi_load_from_memory(blank_png_asset, sizeof(blank_png_asset)-1, &x, &y, &n, 3);
@@ -141,7 +141,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int* maxx,
 			struct w* w = construct_job(path, blank, from, bx, by, x, y, ext);
 			if (w) {
 				work_submit(q, &w->w);
-				log("Submitted job %d", ++submitted);
+				log("Submitted job %d.", ++submitted);
 			}
 		}
 	}
@@ -149,7 +149,7 @@ void zoomout(struct work_queue* q, char* path, char* blank, int from, int* maxx,
 	struct w *w;
 	int finished = 0;
 	while ((w = (struct w*) work_wait(q))) {
-		log("Finished job (%d/%d)", ++finished, submitted);
+		log("Finished job (%d/%d).", ++finished, submitted);
 		free(w);
 	}
 }
