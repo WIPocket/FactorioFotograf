@@ -19,7 +19,7 @@
 #include "stb_image_resize.h"
 #include "stb_image_write.h"
 
-extern bool png; // from main.c; if we are working with PNGs instead of JPEGs
+extern int png, jpg_quality; // arg options from main.c
 
 // A work payload for the threads
 struct w {
@@ -41,7 +41,7 @@ void create_blank(char* path, int s, bool png) {
 	stbi_image_free(blank);
 
 	if (png) stbi_write_png(path, s, s, 3, blank_resized, 0);
-	else     stbi_write_jpg(path, s, s, 3, blank_resized, 0);
+	else     stbi_write_jpg(path, s, s, 3, blank_resized, 80);
 
 	xfree(blank_resized);
 }
@@ -84,7 +84,7 @@ static void go(struct worker_thread *t UNUSED, struct work *wrk) {
 	// WRITE MERGED IMAGE
 
 	if (png) stbi_write_png(payload->paths + PATH_LEN * 4, mw, mh, 3, merged, 0);
-	else     stbi_write_jpg(payload->paths + PATH_LEN * 4, mw, mh, 3, merged, 90);
+	else     stbi_write_jpg(payload->paths + PATH_LEN * 4, mw, mh, 3, merged, jpg_quality);
 
 	xfree(merged);
 }
