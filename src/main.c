@@ -16,10 +16,21 @@
 #include "web/index.html.asset.h"
 #include "web/script.js.asset.h"
 #include "web/leaflet.permalink.min.js.asset.h"
+#include "LICENSE.asset.h"
 
 int png, alt_mode, jobs = 4, jpg_quality = 90, dist = 128, ppt = 32;
 double daytime = 1.0;
 static char *fac_base, *save_name, *fac_bin = "/usr/bin/factorio";
+
+static void show_license() {
+	puts(LICENSE_asset);
+	exit(0);
+}
+
+static void show_version() {
+	puts("FF v" VERSION " (" COMMIT ")");
+	exit(0);
+}
 
 static bool is_dir(char* path) {
 	DIR* dir = opendir(path);
@@ -55,6 +66,9 @@ static struct opt_section options = {
 		OPT_INT   ('q', "jpg-quality", jpg_quality, OPT_REQUIRED_VALUE, "\tJpg quality to use when creating jpgs (0-100) (default 90)"),
 		OPT_INT   ('d', "dist"       , dist       , OPT_REQUIRED_VALUE, "\tMaximum distance from chunk to player structure (default 128)"),
 		OPT_INT   (0  , "ppt"        , ppt        , OPT_REQUIRED_VALUE, "\tPixels per Factorio-tile (default 32)"),
+
+		OPT_CALL  (0  , "license", show_license, NULL, OPT_NO_VALUE, "\tShow license"),
+		OPT_CALL  (0  , "version", show_version, NULL, OPT_NO_VALUE, "\tShow version"),
 		OPT_END
 	}
 };

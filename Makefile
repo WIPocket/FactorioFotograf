@@ -3,11 +3,14 @@
 include config.mk
 
 TARGET ?= ff
-WARNS  ?= -Wall -Wextra
+
+VERSION ?= 2.2
+COMMIT  ?= $(shell git rev-parse --short HEAD)
 
 INCLUDE = -Ideps/stb/include
 
-CFLAGS  += -std=gnu17 $(WARNS)
+WARNS  ?= -Wall -Wextra
+CFLAGS  += -std=gnu17 $(WARNS) -DVERSION="\"$(VERSION)\"" -DCOMMIT="\"$(COMMIT)\""
 LDFLAGS += -lm -lpthread
 
 all: $(TARGET)
