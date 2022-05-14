@@ -17,11 +17,8 @@ Minimalistic Factorio map generator for Linux.
 - (I manually removed 2 most-zoomed-in layers to save space)
 
 ## Usage
-`./ff [--help] -j$(nproc)`  
+`./ff -j$(nproc)`  
 [Detailed usage guide](./docs/guide.md)
-
-## Deps
-Non-headless Factorio
 
 ## Features
 - [x] Web
