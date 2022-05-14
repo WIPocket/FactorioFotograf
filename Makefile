@@ -15,6 +15,10 @@ all: $(TARGET)
 run: $(TARGET)
 	./$(TARGET)
 
+release: $(TARGET)
+	strip $(TARGET)
+	md5sum $(TARGET) > $(TARGET).md5
+
 clean::
 	$(RM) -- $(TARGET)
 

@@ -1,7 +1,7 @@
 TARGET  = ff
 WARNS   = -Wall -Wextra -Wno-pointer-sign
-CFLAGS  = -O3 -flto
-LDFLAGS =
+CFLAGS  = -flto=auto -O3
+LDFLAGS = -Wl,--gc-sections
 
 # source directory
 S = src
