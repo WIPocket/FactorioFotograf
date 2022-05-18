@@ -41,7 +41,7 @@ void create_blank(char* path, int s, bool png) {
 	stbi_image_free(blank);
 
 	if (png) stbi_write_png(path, s, s, 3, blank_resized, 0);
-	else     stbi_write_jpg(path, s, s, 3, blank_resized, 80);
+	else     stbi_write_jpg(path, s, s, 3, blank_resized, jpg_quality);
 
 	xfree(blank_resized);
 }
