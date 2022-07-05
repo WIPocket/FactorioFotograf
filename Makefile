@@ -9,7 +9,7 @@ COMMIT  ?= $(shell git rev-parse --short HEAD)
 
 INCLUDE = -Ideps/stb/include
 
-WARNS  ?= -Wall -Wextra
+WARNS   ?= -Wall -Wextra
 CFLAGS  += -std=gnu17 $(WARNS) -DVERSION="\"$(VERSION)\"" -DCOMMIT="\"$(COMMIT)\""
 LDFLAGS += -lm -lpthread
 
