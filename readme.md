@@ -1,32 +1,11 @@
-# Factorio Fotograf
+# Give Up GitHub
 
-[![demo image](./demo.png)](https://rdck.dev/m/f/protab/#-3.78125,-8.30469,6z)
+This project has given up GitHub.  ([See Software Freedom Conservancy's *Give Up  GitHub* site for details](https://GiveUpGitHub.org).)
 
-Minimalistic Factorio map generator for Linux.
+You can now find this project at [sr.ht](https://git.sr.ht/~prokoprandacek/FactorioFotograf) instead.
 
-## Examples
+Any use of this project's code by GitHub Copilot, past or present, is done without our permission.  We do not consent to GitHub's use of this project's code in Copilot.
 
-### [Protab](https://rdck.dev/m/f/protab/)
-- Larger vanilla map
-- 2 minutes to do everything (including opening factorio & loading the save) (12 thread AMD Ryzen 5)
-- (I manually removed 2 most-zoomed-in layers to save space)
+Join us; you can [give up GitHub](https://GiveUpGitHub.org) too!
 
-### [Space Exploration map](https://rdck.dev/m/f/se/)
-- Modded save example
-- 1 minute to do everything (including opening factorio & loading the save) (12 thread AMD Ryzen 5)
-- (I manually removed 2 most-zoomed-in layers to save space)
-
-## Usage
-`./ff -j$(nproc)`  
-[Detailed usage guide](./docs/guide.md)
-
-## Features
-- [x] Web
-- [x] Compatible with other mods
-- [x] Zooming in parallel
-- [x] Position in the url
-- [x] PNG & JPEG export
-- [ ] Map time lapse capturing
-- [ ] Multiple surfaces
-- [ ] Custom png reader & writter for maximum performance
-
+![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/img/GiveUpGitHub.png)
